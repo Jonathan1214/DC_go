@@ -1,0 +1,24 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta http-equiv="Content-type" content="text/html" charset="utf-8" />
+        <title>confirm</title>
+        <script type="text/javascript">
+        function rec(){
+            var mymessage=confirm('你喜欢她吗？')
+            // confirm 确认！
+            if (mymessage==true)
+            {
+                document.write("Yes")
+            }
+            else
+            {
+                document.write("NO!")
+            }
+        }
+        </script>
+    </head>
+    <body>
+        <input name="button" type="button" onclick="rec()" value="点击我 弹出对话框" />
+    </body>
+</html>
