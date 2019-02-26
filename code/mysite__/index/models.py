@@ -19,6 +19,7 @@ class Teacher(models.Model):
     #    正向查询：未指定name 则使用t1.cid即可查询 否则使用t1.name查询
     #    反向查询：未指定reated_name 则c1.teacher_set可查询 否则使用c1.related_name查询
     #    注意一个十分具有欺骗性的坑，当仅仅创建两个表时，他们并没有连接在一起，而这个时候进行c1.teacher_set仍可以得到返回对象
+    #         （这是为什么呢？）
     #        但是使用c1.teacher_set.all时，查询结果为空，在使用c1.teacher_set.add(t1)之后，进行c1.teacher_set.all查询才
     #        得到正确的返回
 

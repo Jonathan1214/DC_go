@@ -170,6 +170,17 @@ def make_reserversion_pre(request):
     labs = Lab.objects.all()
     return render(request, 'tests/make_res.html', {'student': student, 'labs': labs})
 
+# @my_login_required
+# def make_reserversion_pre(request):
+#     '''
+#     预约界面显示
+#     2.25
+#     '''
+#     pk = request.session['user_id']
+#     student = get_object_or_404(Student, pk=pk)
+
+
+
 @my_login_required
 def make_reserversion(request):
     '''
@@ -217,13 +228,13 @@ def make_reserversion(request):
 
 @my_login_required
 def my_res(request):
-    '''
-    同时处理取消预约请求
-    '''
     if request.method == 'POST':
         res_id = request.POST.get('cancel')
         try:
             Reservation.objects.filter(id=res_id).delete()
+            # res.student.clear()
+            # res.lab.clear()
+            # res.yiqi.clear()
         except:
             return HttpResponse('取消预约失败')
         return redirect('/tests/login/profile/')
