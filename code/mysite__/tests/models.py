@@ -8,6 +8,9 @@ class Student(models.Model):
     student_name = models.CharField(max_length=20)
     pwd = models.CharField(max_length=30)
 
+    # class Meta:
+    #     app_label = 'tests'
+
     def __str__(self):
         return self.student_name
 
@@ -27,7 +30,7 @@ class Lab(models.Model):
 
 class Instrument(models.Model):
     name = models.CharField(max_length=20)
-    total = models.IntegerField(default=4) # 总数
+    total = models.IntegerField(default=4)  # 总数
     used = models.IntegerField(default=0)  # 已经使用数量
     # 把实验室和仪器关联起来 方便查询
     to_lab = models.ForeignKey(Lab, on_delete=models.CASCADE)
@@ -54,14 +57,16 @@ class Day(models.Model):
 
 # 预约表 把学生和实验室关联起来
 class Reservation(models.Model):
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
-    lab = models.ForeignKey(Lab, on_delete=models.CASCADE)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, null=True)
+    lab = models.ForeignKey(Lab, on_delete=models.CASCADE, null=True)
 
     # 预约仪器
-    yiqi = models.ForeignKey(Instrument, on_delete=models.CASCADE, null=True, blank=True)
+    yiqi = models.ForeignKey(
+        Instrument, on_delete=models.CASCADE, null=True)
+    # 可以为空
 
     week_ord_res = models.IntegerField(default=1)
-    what_day = models.IntegerField(default=1) # 星期几 从星期一到星期天
+    what_day = models.IntegerField(default=1)  # 星期几 从星期一到星期天
 
 # class class_time(models.Model):
     # start = models.TimeField()  # 开始时间 其实这张表都是不可更改的

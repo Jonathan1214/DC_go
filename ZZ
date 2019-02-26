@@ -1,0 +1,24 @@
+*   format;[31m1e416f9[m -[33m (HEAD -> master, origin/master, origin/HEAD)[m for merge [32m(%Cr) [1;34m<jonathanlee>[m
+[31m|[m[32m\[m  
+[31m|[m * format;[31m80de1d8[m -[33m (origin/LOGS, LOGS)[m winter-holiday-first [32m(%Cr) [1;34m<jonathanlee>[m
+[31m|[m * format;[31m98e1156[m -[33m[m 1230log_staticfiles [32m(%Cr) [1;34m<jonathanlee>[m
+[31m|[m * format;[31md93516a[m -[33m[m 1228Pandas [32m(%Cr) [1;34m<jonathanlee>[m
+[31m|[m * format;[31m9be0251[m -[33m[m 1227logs [32m(%Cr) [1;34m<jonathanlee>[m
+[31m|[m * format;[31mdfea35b[m -[33m[m 1226log [32m(%Cr) [1;34m<jonathanlee>[m
+[31m|[m * format;[31m1f281e2[m -[33m[m 1225logs solve problem that uwsgi cannot be installed [32m(%Cr) [1;34m<jonathanlee>[m
+* [32m|[m format;[31m815eb26[m -[33m[m mistakes [32m(%Cr) [1;34m<jonathanlee>[m
+* [32m|[m format;[31m4f56413[m -[33m[m mistakes [32m(%Cr) [1;34m<jonathanlee>[m
+* [32m|[m format;[31m6fec202[m -[33m[m push [32m(%Cr) [1;34m<jonathanlee>[m
+* [32m|[m format;[31m33d8bc7[m -[33m[m wrong step [32m(%Cr) [1;34m<jonathanlee>[m
+* [32m|[m   format;[31m0cbeeaf[m -[33m[m Merge branch 'master' of github.com:Jonathan1214/DC_go [32m(%Cr) [1;34m<jonathanlee>[m
+[33m|[m[34m\[m [32m\[m  
+[33m|[m * [32m\[m   format;[31m2f5a6c1[m -[33m[m Merge pull request #1 from Jonathan1214/LOGS [32m(%Cr) [1;34m<JoanthanLi>[m
+[33m|[m [35m|[m[32m\[m [32m\[m  
+[33m|[m [35m|[m [32m|[m[32m/[m  
+[33m|[m [35m|[m * format;[31ma81aee1[m -[33m[m 12-25-morning [32m(%Cr) [1;34m<jonathanlee>[m
+[33m|[m [35m|[m[35m/[m  
+* [35m|[m format;[31me778725[m -[33m[m add [32m(%Cr) [1;34m<jonathanlee>[m
+[35m|[m[35m/[m  
+* format;[31m590d9d4[m -[33m[m 1224LOGS [32m(%Cr) [1;34m<jonathanlee>[m
+* format;[31m38cd4cf[m -[33m[m trying these days [32m(%Cr) [1;34m<jonathanlee>[m
+* format;[31m011ec89[m -[33m[m Initial commit [32m(%Cr) [1;34m<JoanthanLi>[m

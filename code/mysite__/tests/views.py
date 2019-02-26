@@ -1,4 +1,3 @@
-from django.contrib.auth.decorators import login_required
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
@@ -101,7 +100,8 @@ def login(request):
                     request.session['username'] = student.student_num
                     return HttpResponseRedirect(reverse('tests:profile'))
                 message = '密码错误'
-            message = '用户不存在！'
+            else:
+                message = '用户不存在！'
         # form = LoginForm()
         # return render(request, 'tests/login.html', {'message': message})
         return render(request, 'tests/login.html', {'form': form, 'message': message})
@@ -157,6 +157,14 @@ def make_reserversion_pre(request):
     '''
     预约界面显示
     '''
+    if request.method == 'POST':
+        lab_id = request.POST.get('select_lab')
+        week_id = request.POST.get('select_week')
+
+        lab = Lab.objects.get(pk=lab_id)
+        # 应该是按照周数显示
+        return render(request, 'tests/make_2_25.html', {'lab': lab})
+
     pk = request.session['user_id']
     student = get_object_or_404(Student, pk=pk)
     labs = Lab.objects.all()
@@ -169,7 +177,7 @@ def make_reserversion(request):
     '''
     if request.method == 'POST':
         # 获取各种id
-        req_inst = request.POST.getlist('inst_list', [])
+        req_inst = request.POST.getlist('inst_list', [])    # 仪器
         req_lab_cls = request.POST.get('res')
         lab_id = int(req_lab_cls[0])
         weekday = int(req_lab_cls[1])
@@ -180,7 +188,12 @@ def make_reserversion(request):
         # 获取预约的内容
         student = Student.objects.get(pk=student_id)
         lab = Lab.objects.get(pk=lab_id)
-        yiqi = Instrument.objects.get(pk=req_inst[0])
+        # print()
+        if req_inst:
+            yiqi = Instrument.objects.get(pk=req_inst[0])
+        else:
+            yiqi = Instrument.objects.get(name='egg')
+
         # week_ord_res = models.IntegerField.create(week_ord)
         # what_day = models.IntegerField.objects.create(weekday)
 
@@ -192,15 +205,37 @@ def make_reserversion(request):
             week_ord_res=week_ord,
             what_day=weekday,
         )
-        yiqi.used += 1
-        return HttpResponse('预约成功')
+
+        if yiqi:
+            yiqi.used += 1
+        else:
+            pass
+        return redirect('/tests/login/profile/')
 
     return redirect('/tests/login/make-resvervation/')
 
 
 @my_login_required
 def my_res(request):
-    student = get_object_or_404(Student, pk=request.session['user_id'])
+    if request.method == 'POST':
+        res_id = request.POST.get('cancel')
+        try:
+            Reservation.objects.filter(id=res_id).delete()
+            # res.student.clear()
+            # res.lab.clear()
+            # res.yiqi.clear()
+        except:
+            return HttpResponse('取消预约失败')
+        return redirect('/tests/login/profile/')
+
+    student = get_object_or_404(Student, id=request.session['user_id'])
     reservations = Reservation.objects.filter(student=student) # 可以获取多个res么 应该可以吧 那这里返回的就是一个数组
 
     return render(request, 'tests/my_res.html', {'reservations': reservations})
+
+@my_login_required
+def cancelres(request):
+    if request.method == 'POST':
+        pass
+        redirect('/tests/login/profile/')
+

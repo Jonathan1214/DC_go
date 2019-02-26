@@ -10,6 +10,14 @@ class LoginForm(forms.Form):
     pwd = forms.CharField(label='password', initial='请输入密码', widget=forms.PasswordInput)
     jzmm = forms.BooleanField(label='记住密码', widget=forms.CheckboxInput, required=False)
 
+    def clean(self):
+        cleaned_data = super().clean()
+        stu_num = cleaned_data.get('stu_num')
+
+        if not stu_num.isdigit():
+            msg = '学号请输入数字'
+            self.add_error('stu_num', msg)
+
     # widget可以指定参数 如: widget = forms.TextInput(attrs={'class': 'specail'})
     #                       这样就可以在视图中对这个以class='specail'进行渲染
     # attrs:
