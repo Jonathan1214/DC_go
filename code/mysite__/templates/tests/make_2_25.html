@@ -1,0 +1,46 @@
+<div>
+    {% for inst in lab.instrument_set.all %}
+        <p>{{ inst.name }} 总数 {{ inst.total }} 已使用{{ inst.uesd }}</p>
+    {% endfor %}
+</div>
+<form action="#" method="post">
+{% csrf_token %}
+<table border="1">
+        <caption>{{ lab.name }}预约表 第{{ lab.day_set.first.week_ord }}周</caption>
+        <tr>
+            <th>节次</th>
+            <th>星期一</th>
+            <th>星期二</th>
+            <th>星期三</th>
+            <th>星期四</th>
+            <th>星期五</th>
+            <!-- <th>星期六</th> -->
+            <!-- <th>星期天</th> -->
+        </tr>
+        {% for day in lab.day_set.all %}
+        <tr>
+            <td>&nbsp;{{ day.class_ord }}</td>
+            <td>
+                <button type="submit" name="res" value="{{ lab.id }}1{{ day.class_ord }}{{ day.week_ord }}">预约</button>
+                {{ day.mon_cls }}
+            </td>
+            <td>
+                <button type="submit" name="res" value="{{ lab.id }}2{{ day.class_ord }}{{ day.week_ord }}">预约</button>
+                {{ day.tues_cls }}
+            </td>
+            <td>
+                <button type="submit" name="res" value="{{ lab.id }}3{{ day.class_ord }}{{ day.week_ord }}">预约</button>
+                {{ day.wed_cls }}
+            </td>
+            <td>
+                <button type="submit" name="res" value="{{ lab.id }}4{{ day.class_ord }}{{ day.week_ord }}">预约</button>
+                {{ day.thurs_cls }}
+            </td>
+            <td>
+                <button type="submit" name="res" value="{{ lab.id }}5{{ day.class_ord }}{{ day.week_ord }}">预约</button>
+                {{ day.fri_cls }}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</form>

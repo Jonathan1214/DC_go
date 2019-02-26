@@ -217,13 +217,13 @@ def make_reserversion(request):
 
 @my_login_required
 def my_res(request):
+    '''
+    同时处理取消预约请求
+    '''
     if request.method == 'POST':
         res_id = request.POST.get('cancel')
         try:
             Reservation.objects.filter(id=res_id).delete()
-            # res.student.clear()
-            # res.lab.clear()
-            # res.yiqi.clear()
         except:
             return HttpResponse('取消预约失败')
         return redirect('/tests/login/profile/')

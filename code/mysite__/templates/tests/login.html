@@ -30,13 +30,10 @@
 {% endif %}
 <form action="/tests/login/" method="POST">
     {% csrf_token %}
-        <div>
     {% for field in form %}
-        <!-- {{ field.errors }} -->
-            <p>{{ field.label_tag }} {{ field }}</p>
-            <!-- {% if field.help_text %} -->
-            <!-- <p>{{ field.help_text|safe }}</p> -->
-            <!-- {% endif %} -->
+        <div>
+        {{ field.errors }}
+        {{ field.label_tag }} {{ field }}
         </div>
     {% endfor %}
     <div>
