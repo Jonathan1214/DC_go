@@ -1,0 +1,45 @@
+<!-- <!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>登陆界面测试？用户尝试输入密码并匹配！</title>
+    </head>
+    <body>
+        {% if message %}
+            <p>{{ message }}</p>
+        {% endif %}
+        <form action="" method="POST">
+            {% csrf_token %}
+            <div class="username">学&nbsp;&nbsp;号&nbsp;&nbsp;
+                <input class="shurukuang" type="text" name="student_num" placeholder="请输入你的学号"/>
+            </div>
+		    <div class="username">密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码:&nbsp;&nbsp;
+                <input id="pwd" type="password" name="password" placeholder="请输入你的密码（默认为学号）"/>
+            </div>
+            <div class="regist_submit">
+                <input class="submit" type="submit" name="submit" value="登陆" >
+            </div>
+        </form>
+    </body>
+</html> -->
+
+
+<!-- 重写 使用表单方式 -->
+{% if message %}
+    <p>{{ message }}</p>
+{% endif %}
+<form action="/tests/login/" method="POST">
+    {% csrf_token %}
+        <div>
+    {% for field in form %}
+        <!-- {{ field.errors }} -->
+            <p>{{ field.label_tag }} {{ field }}</p>
+            <!-- {% if field.help_text %} -->
+            <!-- <p>{{ field.help_text|safe }}</p> -->
+            <!-- {% endif %} -->
+        </div>
+    {% endfor %}
+    <div>
+        <input type="submit" value="Login"/>
+    </div>
+</form>

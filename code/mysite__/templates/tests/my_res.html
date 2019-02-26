@@ -1,0 +1,21 @@
+<h1>你好</h1>
+<p>{{ reservations.first.student.student_name }}</p>
+<div>
+    <strong>您的预约:</strong>
+    <table border="1">
+        <tr>
+            <th>序号</th>
+            <th>实验室</th>
+            <th>仪器</th>
+            <th>日期</th>
+        </tr>
+        {% for res in reservations %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ res.lab.name }}</td>
+            <td>{{ res.yiqi.name }}</td>
+            <td>第{{ res.week_ord_res }}周 星期{{ res.what_day }} 第节</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
