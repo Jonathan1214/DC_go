@@ -120,7 +120,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -132,6 +132,8 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 # 使用@login_requiered装饰器 未登录时的自动跳转页面
 # 重定向URL?
 LOGIN_URL = '/tests/login/'
+
+
 
 # session
 SESSION_COOKIE_AGE = 60 * 30 # 30mins

@@ -3,7 +3,7 @@
         <p>{{ inst.name }} 总数 {{ inst.total }} 已使用{{ inst.uesd }}</p>
     {% endfor %}
 </div>
-<form action="#" method="post">
+<form action="{% url 'tests:m_r_t' %}" method="post">
 {% csrf_token %}
 <table border="1">
         <caption>{{ lab.name }}预约表 第{{ lab.day_set.first.week_ord }}周</caption>

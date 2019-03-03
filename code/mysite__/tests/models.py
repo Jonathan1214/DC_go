@@ -8,8 +8,7 @@ class Student(models.Model):
     student_name = models.CharField(max_length=20)
     pwd = models.CharField(max_length=30)
 
-    # class Meta:
-    #     app_label = 'tests'
+    is_staff = models.BooleanField(default=False)
 
     def __str__(self):
         return self.student_name
@@ -67,6 +66,9 @@ class Reservation(models.Model):
 
     week_ord_res = models.IntegerField(default=1)
     what_day = models.IntegerField(default=1)  # 星期几 从星期一到星期天
+    class_id = models.IntegerField(null=True)
+
+    res_time = models.DateTimeField(null=True)
 
 # class class_time(models.Model):
     # start = models.TimeField()  # 开始时间 其实这张表都是不可更改的

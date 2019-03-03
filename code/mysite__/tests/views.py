@@ -2,7 +2,7 @@ from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.db import models
-
+from datetime import datetime
 from .forms import LoginForm, NameForm
 from .models import Student, Lab, Instrument, Day, Reservation
 
@@ -86,8 +86,8 @@ def login(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
-            student_num = form.cleaned_data['stu_num']
-            pwd = form.cleaned_data['pwd']
+            student_num = form.cleaned_data['stu_num'] # 学号
+            pwd = form.cleaned_data['pwd']  # 密码
 
             try:
                 student = Student.objects.get(student_num=student_num)
@@ -98,11 +98,13 @@ def login(request):
                     request.session['is_login'] = True
                     request.session['user_id'] = student.id
                     request.session['username'] = student.student_num
+                    if student.is_staff:  # 是否是管理员
+                        return HttpResponseRedirect(reverse('tests:stf_profile'))
                     return HttpResponseRedirect(reverse('tests:profile'))
                 message = '密码错误'
             else:
                 message = '用户不存在！'
-        # form = LoginForm()
+        form = LoginForm()
         # return render(request, 'tests/login.html', {'message': message})
         return render(request, 'tests/login.html', {'form': form, 'message': message})
 
@@ -137,6 +139,12 @@ def profile(request):
 
 
 @my_login_required
+def stf_profile(request):
+    # 管理员显示页面
+    pass
+
+
+@my_login_required
 def change_pwd(request):
     if request.method == 'GET':
         return render(request, 'tests/change_pwd.html')
@@ -151,6 +159,7 @@ def change_pwd(request):
         # return redirect('tests:login', )
     # 最后要改成一个重定向的页面！
     return render(request, 'tests/change_pwd.html', {'message': '两次输入密码不一致，请重新输入'})
+
 
 @my_login_required
 def make_reserversion_pre(request):
@@ -180,7 +189,6 @@ def make_reserversion_pre(request):
 #     student = get_object_or_404(Student, pk=pk)
 
 
-
 @my_login_required
 def make_reserversion(request):
     '''
@@ -199,31 +207,32 @@ def make_reserversion(request):
         # 获取预约的内容
         student = Student.objects.get(pk=student_id)
         lab = Lab.objects.get(pk=lab_id)
-        # print()
+
         if req_inst:
             yiqi = Instrument.objects.get(pk=req_inst[0])
         else:
-            yiqi = Instrument.objects.get(name='egg')
+            yiqi = None
 
         # week_ord_res = models.IntegerField.create(week_ord)
         # what_day = models.IntegerField.objects.create(weekday)
-
         # 这里应该要加上一个try排错才好
-        a_res = Reservation.objects.create(
+        Reservation.objects.create(
             student=student,
             lab=lab,
             yiqi=yiqi,
             week_ord_res=week_ord,
+            class_id=class_id,
             what_day=weekday,
+            res_time=datetime.now()
         )
 
         if yiqi:
             yiqi.used += 1
-        else:
-            pass
-        return redirect('/tests/login/profile/')
 
-    return redirect('/tests/login/make-resvervation/')
+        # 这里用名称更好 redirect(reverse('tests:profile'))
+        return redirect('/tests/profile/')
+
+    return redirect('/tests/make-resvervation/')
 
 
 @my_login_required
@@ -237,16 +246,17 @@ def my_res(request):
             # res.yiqi.clear()
         except:
             return HttpResponse('取消预约失败')
-        return redirect('/tests/login/profile/')
+        return redirect('/tests/profile/')
 
     student = get_object_or_404(Student, id=request.session['user_id'])
-    reservations = Reservation.objects.filter(student=student) # 可以获取多个res么 应该可以吧 那这里返回的就是一个数组
+    reservations = Reservation.objects.filter(
+        student=student)  # 可以获取多个res么 应该可以吧 那这里返回的就是一个数组
 
     return render(request, 'tests/my_res.html', {'reservations': reservations})
+
 
 @my_login_required
 def cancelres(request):
     if request.method == 'POST':
         pass
-        redirect('/tests/login/profile/')
-
+        redirect('/tests/profile/')

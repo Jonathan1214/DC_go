@@ -8,7 +8,6 @@ class LoginForm(forms.Form):
     attrs_for_stu_num = {'placeholder': '请输入学号'}
     stu_num = forms.CharField(label='username', max_length=20, widget=forms.TextInput(attrs=attrs_for_stu_num))        # label是在页面上显示的
     pwd = forms.CharField(label='password', initial='请输入密码', widget=forms.PasswordInput)
-    jzmm = forms.BooleanField(label='记住密码', widget=forms.CheckboxInput, required=False)
 
     def clean(self):
         cleaned_data = super().clean()

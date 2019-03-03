@@ -10,6 +10,7 @@
             <th>实验室</th>
             <th>仪器</th>
             <th>日期</th>
+            <th>预约时间</th>
             <th>取消预约</th>
         </tr>
         {% for res in reservations %}
@@ -17,7 +18,8 @@
             <td>{{ forloop.counter }}</td>
             <td>{{ res.lab.name }}</td>
             <td>{{ res.yiqi.name }}</td>
-            <td>第{{ res.week_ord_res }}周 星期{{ res.what_day }} 第节</td>
+            <td>第{{ res.week_ord_res }}周 星期{{ res.what_day }} 第{{ res.class_id }}节</td>
+            <td>{{ res.res_time.year }}年{{ res.res_time.month }}月{{ res.res_time.day }}日 {{ res.res_time.hour }}:{{ res.res_time.minute }}</td>
             <td>
                 <button type="submit" name="cancel" value="{{ res.id }}">取消预约{{ res.id }}</button>
             </td>
