@@ -10,8 +10,9 @@ urlpatterns = [
     path('logout/', views.logout, name='logout'),
     path('profile/', views.profile, name='profile'),
     path('staff_profile/', views.stf_profile, name='stf_profile'),
+    path('staff/query/', views.query_result, name='query_result'),
     path('res/', views.my_res, name='my_res'),
-    path('lmake-resvervation/', views.make_reserversion_pre, name='m_r_p'),
+    path('make-resvervation/', views.make_reserversion_pre, name='m_r_p'),
     path('make_res-t/', views.make_reserversion, name='m_r_t'),
     path('change_pwd/', views.change_pwd, name='change_pwd'),
 ]

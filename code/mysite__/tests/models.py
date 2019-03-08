@@ -40,13 +40,16 @@ class Instrument(models.Model):
 
 class Day(models.Model):
     class_ord = models.IntegerField(default=0)       # 节次 设定为4节 上下午各两节
+    week_ord = models.IntegerField(default=1)
+
+    # 定义
     mon_cls = models.IntegerField(default=0)       # 改成预约的人数 默认为0 表示无人预约
     tues_cls = models.IntegerField(default=0)       # 设置上限为10？ 这个后面具体考察
     wed_cls = models.IntegerField(default=0)       # 当值超过10时表示教室在上课 被占用
     thurs_cls = models.IntegerField(default=0)
     fri_cls = models.IntegerField(default=0)
 
-    week_ord = models.IntegerField(default=1)
+
     #  课程时间什么的直接在HTML里面写 省去了
     day_to_lab = models.ForeignKey(Lab, on_delete=models.CASCADE)
 

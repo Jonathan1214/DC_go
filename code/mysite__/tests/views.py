@@ -50,67 +50,69 @@ def meta(request):
 # for test
 
 
-# def login(request):
-    # '''
-    # 简单登陆界面
-    # 成功则返回：welcome + student_name
-    # '''
-    # if request.method == 'POST':
-    #     student_num = request.POST.get("student_num")
-    #     pwd = request.POST.get("password")
-    #     if not student_num:
-    #         return render(request, 'tests/login.html', {'message': '有数据为空！'})
-    #     try:
-    #         student = Student.objects.get(student_num=student_num)
-    #     except Student.DoesNotExist:
-    #         student = None
+def login(request):
+    '''
+    简单登陆界面
+    成功则返回：welcome + student_name
+    '''
+    if request.method == 'POST':
+        student_num = request.POST.get("student_num")
+        pwd = request.POST.get("password")
+        if not student_num:
+            return render(request, 'tests/login.html', {'message': '有数据为空！'})
+        try:
+            student = Student.objects.get(student_num=student_num)
+        except Student.DoesNotExist:
+            student = None
 
-    #     if student:
-    #         if student.pwd == pwd:
-    #             request.session['is_login'] = True
-    #             request.session['user_id'] = student.id
-    #             request.session['username'] = student.student_num
-    #             return HttpResponseRedirect(reverse('tests:profile', args=[student.id]))
-    #         message = '密码错误'
-    #     else:
-    #         message = '用户不存在！'
-    #     return render(request, 'tests/login.html', {'message': message})
-    # return render(request, 'tests/login.html', {'message': '重新输入！'})
+        if student:
+            if student.pwd == pwd:
+                request.session['is_login'] = True
+                request.session['user_id'] = student.id
+                request.session['username'] = student.student_num
+                if student.is_staff:
+                    return HttpResponseRedirect(reverse('tests:stf_profile'))
+                return HttpResponseRedirect(reverse('tests:profile'))
+            message = '密码错误'
+        else:
+            message = '用户不存在！'
+        return render(request, 'tests/login.html', {'message': message})
+    return render(request, 'tests/login.html', {'message': '重新输入！'})
 
 # 重写login函数 1.12 22:00
 
 
-def login(request):
-    message = request.method
+# def login(request):
+#     message = request.method
 
-    if request.method == 'POST':
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            student_num = form.cleaned_data['stu_num'] # 学号
-            pwd = form.cleaned_data['pwd']  # 密码
+#     if request.method == 'POST':
+#         form = LoginForm(request.POST)
+#         if form.is_valid():
+#             student_num = form.cleaned_data['stu_num'] # 学号
+#             pwd = form.cleaned_data['pwd']  # 密码
 
-            try:
-                student = Student.objects.get(student_num=student_num)
-            except Student.DoesNotExist:
-                student = None
-            if student:
-                if student.pwd == pwd:
-                    request.session['is_login'] = True
-                    request.session['user_id'] = student.id
-                    request.session['username'] = student.student_num
-                    if student.is_staff:  # 是否是管理员
-                        return HttpResponseRedirect(reverse('tests:stf_profile'))
-                    return HttpResponseRedirect(reverse('tests:profile'))
-                message = '密码错误'
-            else:
-                message = '用户不存在！'
-        form = LoginForm()
-        # return render(request, 'tests/login.html', {'message': message})
-        return render(request, 'tests/login.html', {'form': form, 'message': message})
+#             try:
+#                 student = Student.objects.get(student_num=student_num)
+#             except Student.DoesNotExist:
+#                 student = None
+#             if student:
+#                 if student.pwd == pwd:
+#                     request.session['is_login'] = True
+#                     request.session['user_id'] = student.id
+#                     request.session['username'] = student.student_num
+#                     if student.is_staff:  # 是否是管理员
+#                         return HttpResponseRedirect(reverse('tests:stf_profile'))
+#                     return HttpResponseRedirect(reverse('tests:profile'))
+#                 message = '密码错误'
+#             else:
+#                 message = '用户不存在！'
+#         form = LoginForm()
+#         # return render(request, 'tests/login.html', {'message': message})
+#         return render(request, 'tests/login.html', {'form': form, 'message': message})
 
-    form = LoginForm()
-    # message = request.method
-    return render(request, 'tests/login.html', {'form': form, 'message': message})
+#     form = LoginForm()
+#     # message = request.method
+#     return render(request, 'tests/login.html', {'form': form, 'message': message})
 
 
 @my_login_required
@@ -141,7 +143,26 @@ def profile(request):
 @my_login_required
 def stf_profile(request):
     # 管理员显示页面
-    pass
+    # if request.method == "GET":
+    #     qlab_id = int(request.GET.get('query_lab'))
+    #     qweek_id = int(request.GET.get('query_week'))
+
+    #     lab = Lab.objects.get(id=qlab_id)
+    #     return render(request, 'tests/query.html', {'lab': lab, 'week': qweek_id})
+
+    stf = Student.objects.get(id=request.session['user_id'])
+    return render(request, 'tests/stf_profile.html', {'staff': stf})
+
+@my_login_required
+def query_result(request):
+    qlab_id = int(request.GET.get('query_lab'))
+    qweek_id = int(request.GET.get('query_week'))
+
+    try:
+        lab = Lab.objects.get(id=qlab_id)
+    except:
+        lab = None
+    return render(request, 'tests/query_result.html', {'lab': lab, 'week': qweek_id})
 
 
 @my_login_required
@@ -172,21 +193,13 @@ def make_reserversion_pre(request):
 
         lab = Lab.objects.get(pk=lab_id)
         # 应该是按照周数显示
-        return render(request, 'tests/make_2_25.html', {'lab': lab})
+        return render(request, 'tests/make_2_25.html', {'lab': lab, 'week':week_id})
 
     pk = request.session['user_id']
     student = get_object_or_404(Student, pk=pk)
     labs = Lab.objects.all()
     return render(request, 'tests/make_res.html', {'student': student, 'labs': labs})
 
-# @my_login_required
-# def make_reserversion_pre(request):
-#     '''
-#     预约界面显示
-#     2.25
-#     '''
-#     pk = request.session['user_id']
-#     student = get_object_or_404(Student, pk=pk)
 
 
 @my_login_required
@@ -232,7 +245,6 @@ def make_reserversion(request):
         # 这里用名称更好 redirect(reverse('tests:profile'))
         return redirect('/tests/profile/')
 
-    return redirect('/tests/make-resvervation/')
 
 
 @my_login_required
