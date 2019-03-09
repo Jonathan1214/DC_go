@@ -20,6 +20,7 @@
             <td>{{ res.yiqi.name }}</td>
             <td>第{{ res.week_ord_res }}周 星期{{ res.what_day }} 第{{ res.class_id }}节</td>
             <td>{{ res.res_time.year }}年{{ res.res_time.month }}月{{ res.res_time.day }}日 {{ res.res_time.hour }}:{{ res.res_time.minute }}</td>
+            <!-- 这里可以用过滤器写的 更简洁 -->
             <td>
                 <button type="submit" name="cancel" value="{{ res.id }}">取消预约{{ res.id }}</button>
             </td>
