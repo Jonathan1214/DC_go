@@ -1,0 +1,37 @@
+<h1>查询结果</h1>
+<p>这是查询结果，准备用表格展示</p>
+<p>
+    {% if lab %}
+        待查询的实验室：{{ lab.name }}
+    {% endif %}
+    {% if week %}
+        待查询的周次: {{ week }}
+    {% endif %}
+</p>
+<!-- 先实现查询任意实验室任意周的预约情况 -->
+<p>
+    <table border="1">
+        <caption><strong>查询预约</strong></caption>
+        <tr>
+            <th>序号</th>
+            <th>周次</th>
+            <th>星期</th>
+            <th>节次</th>
+            <th>预约人</th>
+            <th>学号</th>
+            <th>仪器</th>
+        </tr>
+        {% for res in res_list %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ week }}</td>
+            <td>{{ res.what_day }}</td>
+            <td>{{ res.class_id }}</td>
+            <td>{{ res.student.student_name }}</td>
+            <td>{{ res.student.student_num }}</td>
+            <td>{{ res.yiqi.name }}</td>
+        </tr>
+            {% empty %}
+        {% endfor %}
+    </table>
+</p>

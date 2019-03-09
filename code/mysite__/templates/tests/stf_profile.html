@@ -1,0 +1,19 @@
+<p><h3>你好，管理员</h3></p>
+<strong>{{ staff.student_name }}</strong>
+<div>
+    <h1>查询框</h1>
+    <form action="{% url 'tests:query_result' %}" method="GET">
+        <select name="query_lab" id="id_qlab">
+            <option value="0" selected="selected"></option>
+            <option value="1">lab1</option>
+            <option value="2">lab2</option>
+        </select>
+        <select name="query_week" id="id_qweek">
+            <option value="0" selected="selected"></option>
+            <option value="1">第一周</option>
+            <option value="2">第二周</option>
+            <!-- 先只作这两周的 -->
+        </select>
+        <input type="submit" size="4" value="搜索">
+    </form>
+</div>

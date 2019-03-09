@@ -162,7 +162,18 @@ def query_result(request):
         lab = Lab.objects.get(id=qlab_id)
     except:
         lab = None
-    return render(request, 'tests/query_result.html', {'lab': lab, 'week': qweek_id})
+
+    if lab and qweek_id:
+        # 按照实验室和星期查询
+        res_list = lab.reservation_set.filter(week_ord_res=qweek_id).order_by('what_day')
+    elif lab:
+        res_list = lab.reservation_set.all() # 应该再加一个排序的 暂时想不到有什么好办法
+    elif qweek_id:
+        res_list = Reservation.objects.filter(week_ord_res=qweek_id)
+    else:
+        res_list = Reservation.objects.all()
+
+    return render(request, 'tests/query_result.html', {'lab': lab, 'week': qweek_id, 'res_list': res_list})
 
 
 @my_login_required
