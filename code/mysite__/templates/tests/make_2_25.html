@@ -54,23 +54,25 @@
                     <td>&nbsp;{{ day.class_ord }}</td>
                     <td>
                         <button  type="submit" name="res" value="{{ lab.id }}1{{ day.class_ord }}{{ week }}">预约</button>
-                        {{ day.mon_cls }} {{ day.week_ord }} {{ week }}
+                        {{ day.mon_res }}/8
+                        <!-- 如何显示这节课已经预约的人数 -->
+                        <!-- 把 week_ord 改成 week 会有想不到的结果，但也只好这样，这似乎是个好的处理办法  -->
                     </td>
                     <td>
                         <button  type="submit" name="res" value="{{ lab.id }}2{{ day.class_ord }}{{ week }}">预约</button>
-                        {{ day.tues_cls }}
+                        {{ day.tues_res }}/8
                     </td>
                     <td>
                         <button  type="submit" name="res" value="{{ lab.id }}3{{ day.class_ord }}{{ week }}">预约</button>
-                        {{ day.wed_cls }}
+                        {{ day.wed_res }}/8
                     </td>
                     <td>
                         <button  type="submit" name="res" value="{{ lab.id }}4{{ day.class_ord }}{{ week }}">预约</button>
-                        {{ day.thurs_cls }}
+                        {{ day.thurs_res }}/8
                     </td>
                     <td>
                         <button  type="submit" name="res" value="{{ lab.id }}5{{ day.class_ord }}{{ week }}">预约</button>
-                        {{ day.fri_cls }}
+                        {{ day.fri_res }}/8
                     </td>
                 </tr>
 
@@ -78,7 +80,5 @@
                 {% endfor %}
         </table>
     </form>
-
 </body>
-
 </html>

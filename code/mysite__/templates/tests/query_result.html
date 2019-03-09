@@ -14,6 +14,7 @@
         <caption><strong>查询预约</strong></caption>
         <tr>
             <th>序号</th>
+            <th>实验室</th>
             <th>周次</th>
             <th>星期</th>
             <th>节次</th>
@@ -24,7 +25,8 @@
         {% for res in res_list %}
         <tr>
             <td>{{ forloop.counter }}</td>
-            <td>{{ week }}</td>
+            <td>{{ res.lab.name }}</td>
+            <td>{{ res.week_ord_res }}</td>
             <td>{{ res.what_day }}</td>
             <td>{{ res.class_id }}</td>
             <td>{{ res.student.student_name }}</td>

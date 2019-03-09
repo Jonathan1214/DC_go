@@ -79,41 +79,6 @@ def login(request):
         return render(request, 'tests/login.html', {'message': message})
     return render(request, 'tests/login.html', {'message': '重新输入！'})
 
-# 重写login函数 1.12 22:00
-
-
-# def login(request):
-#     message = request.method
-
-#     if request.method == 'POST':
-#         form = LoginForm(request.POST)
-#         if form.is_valid():
-#             student_num = form.cleaned_data['stu_num'] # 学号
-#             pwd = form.cleaned_data['pwd']  # 密码
-
-#             try:
-#                 student = Student.objects.get(student_num=student_num)
-#             except Student.DoesNotExist:
-#                 student = None
-#             if student:
-#                 if student.pwd == pwd:
-#                     request.session['is_login'] = True
-#                     request.session['user_id'] = student.id
-#                     request.session['username'] = student.student_num
-#                     if student.is_staff:  # 是否是管理员
-#                         return HttpResponseRedirect(reverse('tests:stf_profile'))
-#                     return HttpResponseRedirect(reverse('tests:profile'))
-#                 message = '密码错误'
-#             else:
-#                 message = '用户不存在！'
-#         form = LoginForm()
-#         # return render(request, 'tests/login.html', {'message': message})
-#         return render(request, 'tests/login.html', {'form': form, 'message': message})
-
-#     form = LoginForm()
-#     # message = request.method
-#     return render(request, 'tests/login.html', {'form': form, 'message': message})
-
 
 @my_login_required
 def logout(request):
@@ -142,16 +107,9 @@ def profile(request):
 
 @my_login_required
 def stf_profile(request):
-    # 管理员显示页面
-    # if request.method == "GET":
-    #     qlab_id = int(request.GET.get('query_lab'))
-    #     qweek_id = int(request.GET.get('query_week'))
-
-    #     lab = Lab.objects.get(id=qlab_id)
-    #     return render(request, 'tests/query.html', {'lab': lab, 'week': qweek_id})
-
     stf = Student.objects.get(id=request.session['user_id'])
     return render(request, 'tests/stf_profile.html', {'staff': stf})
+
 
 @my_login_required
 def query_result(request):
@@ -165,13 +123,20 @@ def query_result(request):
 
     if lab and qweek_id:
         # 按照实验室和星期查询
-        res_list = lab.reservation_set.filter(week_ord_res=qweek_id).order_by('what_day')
+        res_list = lab.reservation_set.filter(
+            week_ord_res=qweek_id).order_by('what_day', 'class_id')
     elif lab:
-        res_list = lab.reservation_set.all() # 应该再加一个排序的 暂时想不到有什么好办法
+        res_list = lab.reservation_set.all().order_by(
+            'week_ord_res', 'what_day', 'class_id')
+        # 应该再加一个排序的 暂时想不到有什么好办法 resolved
     elif qweek_id:
         res_list = Reservation.objects.filter(week_ord_res=qweek_id)
+        # 指定周次查询
     else:
-        res_list = Reservation.objects.all()
+        res_list = Reservation.objects.all().order_by(
+            'lab__id', 'week_ord_res', 'what_day', 'class_id')
+        # 不指定 lab 和周次则查询所有的预约，按照 lab_id 周次 星期 节次 排序
+        # 双下划线 means querying across model relation
 
     return render(request, 'tests/query_result.html', {'lab': lab, 'week': qweek_id, 'res_list': res_list})
 
@@ -203,14 +168,16 @@ def make_reserversion_pre(request):
         week_id = request.POST.get('select_week')
 
         lab = Lab.objects.get(pk=lab_id)
+
+        # 维护一个 4*5 的二维数组，表示没每周每节
+        # 放弃这个思路了 直接增加 column
         # 应该是按照周数显示
-        return render(request, 'tests/make_2_25.html', {'lab': lab, 'week':week_id})
+        return render(request, 'tests/make_2_25.html', {'lab': lab, 'week': week_id})
 
     pk = request.session['user_id']
     student = get_object_or_404(Student, pk=pk)
     labs = Lab.objects.all()
     return render(request, 'tests/make_res.html', {'student': student, 'labs': labs})
-
 
 
 @my_login_required
@@ -239,6 +206,7 @@ def make_reserversion(request):
 
         # week_ord_res = models.IntegerField.create(week_ord)
         # what_day = models.IntegerField.objects.create(weekday)
+
         # 这里应该要加上一个try排错才好
         Reservation.objects.create(
             student=student,
@@ -252,23 +220,69 @@ def make_reserversion(request):
 
         if yiqi:
             yiqi.used += 1
+            yiqi.save()
+
+        res_day = lab.day_set.filter(week_ord=week_ord, class_ord=class_id)[0]
+        if weekday == 1:
+            res_day.mon_res += 1
+        elif weekday == 2:
+            res_day.tues_res += 1
+        elif weekday == 3:
+            res_day.wed_res += 1
+        elif weekday == 4:
+            res_day.thurs_res += 1
+        else:
+            res_day.fri_res += 1
+        res_day.save()
 
         # 这里用名称更好 redirect(reverse('tests:profile'))
         return redirect('/tests/profile/')
-
 
 
 @my_login_required
 def my_res(request):
     if request.method == 'POST':
         res_id = request.POST.get('cancel')
+        flag = 0
         try:
-            Reservation.objects.filter(id=res_id).delete()
-            # res.student.clear()
-            # res.lab.clear()
-            # res.yiqi.clear()
+            res_values = Reservation.objects.filter(id=res_id).values()[0]
+            Reservation.objects.get(id=res_id).delete()
+            flag = 1
         except:
             return HttpResponse('取消预约失败')
+
+        # 更新预约显示的每节课预约的人数
+        if flag:
+            lab = Lab.objects.get(id=res_values.get('lab_id'))
+            weekday = res_values.get('what_day')
+            res_day = lab.day_set.filter(week_ord=res_values.get(
+                'week_ord_res'), class_ord=res_values.get('class_id'))[0]
+            if weekday == 1:
+                res_day.mon_res -= 1
+                if res_day.mon_res < 0:
+                    res_day.mon_res = 0
+
+            elif weekday == 2:
+                res_day.tues_res -= 1
+                if res_day.tues_res < 0:
+                    res_day.tues_res = 0
+
+            elif weekday == 3:
+                res_day.wed_res -= 1
+                if res_day.wed_res < 0:
+                    res_day.wed_res = 0
+
+            elif weekday == 4:
+                res_day.thurs_res -= 1
+                if res_day.thurs_res < 0:
+                    res_day.thurs_res = 0
+
+            else:
+                res_day.fri_res -= 1
+                if res_day.fri_res < 0:
+                    res_day.fri_res = 0
+            res_day.save()
+
         return redirect('/tests/profile/')
 
     student = get_object_or_404(Student, id=request.session['user_id'])
@@ -276,10 +290,3 @@ def my_res(request):
         student=student)  # 可以获取多个res么 应该可以吧 那这里返回的就是一个数组
 
     return render(request, 'tests/my_res.html', {'reservations': reservations})
-
-
-@my_login_required
-def cancelres(request):
-    if request.method == 'POST':
-        pass
-        redirect('/tests/profile/')
