@@ -1,0 +1,1 @@
+[{"model": "index.class", "pk": 1, "fields": {"cname": "1"}}, {"model": "index.teacher", "pk": 1, "fields": {"tname": "myt", "teacher": [1]}}, {"model": "index.person", "pk": 1, "fields": {"name": "john"}}, {"model": "index.group", "pk": 1, "fields": {"name": "math"}}]

@@ -1,0 +1,1 @@
+[{"model": "polls.question", "pk": 1, "fields": {"question_text": "please select me", "pub_date": "2018-12-20T09:00:00"}}, {"model": "polls.choice", "pk": 1, "fields": {"qq": 1, "choice_text": "select question1", "votes": 10}}]
