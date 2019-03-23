@@ -1,42 +1,206 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <title>登陆界面测试？用户尝试输入密码并匹配！</title>
-    </head>
+<head>
+    <meta http-equiv="Content-Type" content="textml; charset=utf-8">
+    <title>login</title>
+    <style type="text/css">
+        * {
+        margin: 0;
+        padding: 0;
+    }
+
+    #wrap {
+        height: 719px;
+        width: 100;
+        background-image: url(../../static/images/background004.jpg);
+        background-repeat: no-repeat;
+        background-position:20px 65px;
+        position: relative;
+    }
+
+    #head {
+        height: 120px;
+        width: 100;
+        background-color: #66CCCC;
+        text-align: center;
+        position: relative;
+    }
+
+    #foot {
+        width: 100;
+        height: 126px;
+        background-color: #CC9933;
+        position: relative;
+    }
+
+    #wrap .logGet {
+        height: 408px;
+        width: 368px;
+        position: absolute;
+        background-color: #FFFFFF;
+        top: 20%;
+        right: 15%;
+    }
+
+    .logC button {
+        width: 100%;
+        height: 45px;
+        background-color: #ee7700;
+        border: none;
+        color: white;
+        font-size: 18px;
+    }
+
+    .logGet .logD.logDtip .p1 {
+        display: inline-block;
+        font-size: 28px;
+        margin-top: 30px;
+        width: 86%;
+    }
+
+    #wrap .logGet .logD.logDtip {
+        width: 86%;
+        border-bottom: 1px solid #ee7700;
+        margin-bottom: 60px;
+        margin-top: 0px;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    .logGet .lgD img {
+        position: absolute;
+        top: 12px;
+        left: 8px;
+    }
+
+    .logGet .lgD input {
+        width: 100%;
+        height: 42px;
+        text-indent: 2.5rem;
+    }
+
+    #wrap .logGet .lgD {
+        width: 86%;
+        position: relative;
+        margin-bottom: 30px;
+        margin-top: 30px;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    #wrap .logGet .logC {
+        width: 86%;
+        margin-top: 0px;
+        margin-right: auto;
+        margin-bottom: 0px;
+        margin-left: auto;
+    }
+
+    .title {
+        font-family: "宋体";
+        color: #FFFFFF;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%); /* 使用css3的transform来实现 */
+        font-size: 36px;
+        height: 40px;
+        width: 40%;
+    }
+
+    .copyright {
+        font-family: "宋体";
+        color: #FFFFFF;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%); /* 使用css3的transform来实现 */
+        height: 60px;
+        width: 40%;
+        text-align: center;
+    }
+
+    #foot .copyright .img {
+        width: 100%;
+        height: 24px;
+        position: relative;
+    }
+
+    .copyright .img .icon {
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        margin-left: 22px;
+        vertical-align: middle;
+        background-image: url(%E7%94%B5%E5%AD%90%E9%82%AE%E4%BB%B6.png);
+        background-repeat: no-repeat;
+        vertical-align: middle;
+        margin-right: 5px;
+    }
+
+    .copyright .img .icon1 {
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        margin-left: 22px;
+        vertical-align: middle;
+        background-image: url(%E5%9C%B0%E5%9D%80.png);
+        background-repeat: no-repeat;
+        vertical-align: middle;
+        margin-right: 5px;
+    }
+
+    .copyright .img .icon2 {
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        margin-left: 22px;
+        vertical-align: middle;
+        background-image: url(%E8%81%94%E7%B3%BB%E6%96%B9%E5%BC%8F.png);
+        background-repeat: no-repeat;
+        vertical-align: middle;
+        margin-right: 5px;
+    }
+
+    #foot .copyright p {
+        height: 24px;
+        width: 100%;
+    }</style>
+</head>
+
     <body>
-        {% if message %}
-            <p>{{ message }}</p>
-        {% endif %}
+        <div class="header" id="head">
+    <div class="title">电信学院实验室预约系统身份认证</div>
+</div>
+<div class="wrap" id="wrap">
+     <div class="logGet"> <!--头部提示信息-->
+      <div class="logD logDtip"><p class="p1">登录</p></div>            <!-- 输入框 -->
         <form action="" method="POST">
             {% csrf_token %}
-            <div class="username">账&nbsp;&nbsp;号&nbsp;&nbsp;
-                <input class="shurukuang" type="text" name="student_num" placeholder="请输入学号或管理员账号"/>
+            <div class="lgD">
+                <img src="../../static/images/1.jpg" width="20" height="20" alt=""/><input type="text" name="student_num" placeholder="请输入学号"/>
             </div>
-		    <div class="username">密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码:&nbsp;&nbsp;
-                <input id="pwd" type="password" name="password" placeholder="请输入你的密码（默认为账号）"/>
+		    <div class="lgD">
+                <img src="../../static/images/psd.jpg" width="20" height="20" alt=""/><input id="pwd" type="text" name="password" placeholder="请输入密码（默认为学号）"/>
             </div>
-            <div class="regist_submit">
-                <input class="submit" type="submit" name="submit" value="登录" >
+            {% if message %}
+            <h4 align="center">{{ message }}</h4>
+            {% endif %}
+            <div class="logC">
+                <button type="submit" name="submit">登录</button>
             </div>
         </form>
+     </div>
+</div>
+<div class="footer" id="foot">
+    <div class="copyright"><p>Copyright © 2018 xxxxx.com Inc. All Rights Reserved.</p>
+        <div class="img"><i class="icon"></i><span>联系邮箱：jonathan0101@gmail.com</span></div>
+        <div class="img"><i class="icon1"></i><span>联系地址：JonathanLi</span></div>
+        <div class="img"><i class="icon2"></i><span>联系电话：13555555555</span></div>
+    </div>
+</div>
     </body>
 </html>
 
 
-<!-- 重写 使用表单方式 -->
-<!-- {% if message %}
-    <p>{{ message }}</p>
-{% endif %}
-<form action="{% url 'tests:login' %}" method="POST">
-    {% csrf_token %}
-    {% for field in form %}
-        <div>
-        {{ field.errors }}
-        {{ field.label_tag }} {{ field }}
-        </div>
-    {% endfor %}
-    <div>
-        <input type="submit" value="Login"/>
-    </div>
-</form> -->
+
