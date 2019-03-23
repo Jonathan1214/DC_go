@@ -6,6 +6,13 @@
         <title>主界面</title>
         <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
         <!-- <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">   -->
+        <script type="text/javascript">
+            function rec(){
+                var mychar = "I love javascript";
+                // alert 弹出对话框 类似 document.write
+                alert(mychar)
+            }
+        </script>
     </head>
     <body>
         <div class="jumbotron jumbotron-fluid">
@@ -17,5 +24,6 @@
                 {% endfor %}
             </div>
         </div>
+        <input name="button" type="button" onclick="rec()" value="点击我 弹出对话框" />
     </body>
 </html>

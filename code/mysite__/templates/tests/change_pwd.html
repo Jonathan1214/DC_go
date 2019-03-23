@@ -3,8 +3,12 @@
     <head>
         <title>电信学院实验室预约中心</title>
         <meta charset="UTF-8">
-        <meta name="viewport" http-equiv="Content-Type" content="width=device-width, initial-scale=1">
-        <script></script>
+        <meta name="viewport" http-equiv="Content-Type" content="width=device-width,initial-scale=0.3, minimum-scale0.3, maximum-scale=10.0, user-scalable=yes">
+        <script type="text/javascript">
+        function Res() {
+            alert("功能暂未开放");
+        }
+    </script>
     <style>
         * {
     box-sizing: border-box;
@@ -68,7 +72,7 @@ body {
 /* 边栏 */
 .side {
     -ms-flex: 30%; /* IE10 */
-    flex: 20%;
+    flex: 18%;
     background-color: #f1f1f1;
     padding: 20px;
 }
@@ -76,7 +80,7 @@ body {
 /* 主要的内容区域 */
 .main {
     -ms-flex: 70%; /* IE10 */
-    flex: 80%;
+    flex: 82%;
     background-color: white;
     padding: 20px;
 }
@@ -127,7 +131,9 @@ body {
             <p>Laboratory Reservation Center of Telecom College, Harbin Institute of Technology</p>
         </div>
         <div class="navbar">
+            <a href=" #" onclick="javascript:history.go(-1);">👈返回上一页</a>
             <a href="{% url 'tests:logout' %}" class="right">退出登录</a>
+            <a href="" class="right"  onclick="Res()">联系管理员</a>
             <a href="{% url 'tests:my_res' %}" class="right">我的预约</a>
             <a href="{% url 'tests:m_r_p' %}" class="right">预约实验室</a>
         </div>

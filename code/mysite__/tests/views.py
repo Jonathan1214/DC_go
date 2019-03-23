@@ -77,7 +77,8 @@ def login(request):
         else:
             message = '用户不存在！'
         return render(request, 'tests/login.html', {'message': message})
-    return render(request, 'tests/login.html', {'message': '重新输入！'})
+    message = ''
+    return render(request, 'tests/login.html', {'message': message})
 
 
 @my_login_required
@@ -163,6 +164,9 @@ def make_reserversion_pre(request):
     '''
     预约界面显示
     '''
+    pk = request.session['user_id']
+    student = get_object_or_404(Student, pk=pk)
+    labs = Lab.objects.all()
     if request.method == 'POST':
         lab_id = request.POST.get('select_lab')
         week_id = request.POST.get('select_week')
@@ -172,11 +176,8 @@ def make_reserversion_pre(request):
         # 维护一个 4*5 的二维数组，表示没每周每节
         # 放弃这个思路了 直接增加 column
         # 应该是按照周数显示
-        return render(request, 'tests/make_2_25.html', {'lab': lab, 'week': week_id})
+        return render(request, 'tests/make_2_25.html', {'lab': lab, 'week': week_id, 'student': student})
 
-    pk = request.session['user_id']
-    student = get_object_or_404(Student, pk=pk)
-    labs = Lab.objects.all()
     return render(request, 'tests/make_res.html', {'student': student, 'labs': labs})
 
 

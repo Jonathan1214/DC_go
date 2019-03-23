@@ -1,17 +1,215 @@
-<h1>你好</h1>
-<p>{{ reservations.first.student.student_name }}</p>
-<div>
-    <strong>您的预约:</strong>
-    <table border="1">
+<!DOCTYPE html>
+<html>
+<head>
+        <title>电信学院实验室预约中心</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" http-equiv="Content-Type" content="width=device-width,initial-scale=0.3, minimum-scale0.3, maximum-scale=10.0, user-scalable=yes">
+        <script type="text/javascript">
+        function Res() {
+            alert("功能暂未开放");
+        }
+    </script>
+        <style>
+            * {
+    box-sizing: border-box;
+}
+
+/* body 样式 */
+body {
+    font-family: Arial;
+    margin: 0;
+}
+
+/* 标题 */
+.header {
+    padding: 60px;
+    text-align: center;
+    background: #66CCCC;
+    color: white;
+}
+
+/* 标题字体加大 */
+.header h1 {
+    font-size: 40px;
+}
+
+/*表格样式*/
+table{
+    table-layout: fixed;
+    empty-cells: show;
+    position: absolute;
+    left: 450px;
+    border-collapse: collapse;
+    border: 1px solid #cad9ea;
+    color: #666;
+    font-size: 14px;
+    text-align: center;
+}
+button{
+    background-color: #cad9ea;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 12px;
+}
+caption{
+    font-size: 25px;
+}
+
+th{
+    background-repeat: repeat-x;
+    height: 30px;
+}
+td{
+    height:20px;
+}
+td,th{
+    border: 1px solid #cad9ea;
+    padding: 0 lem 0;
+}
+th.special{
+    background: #b8daff;
+    height: 40px;
+}
+/* 导航 */
+.navbar {
+    overflow: hidden;
+    background-color: #333;
+}
+
+/* 导航栏样式 */
+.navbar a {
+    float: left;
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 20px;
+    text-decoration: none;
+}
+
+/* 右侧链接*/
+.navbar a.right {
+    float: right;
+}
+
+/* 鼠标移动到链接的颜色 */
+.navbar a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+/* 列容器 */
+.row {
+    display: -ms-flexbox; /* IE10 */
+    display: flex;
+    -ms-flex-wrap: wrap; /* IE10 */
+    flex-wrap: wrap;
+}
+
+/* 创建两个列 */
+/* 边栏 */
+.side {
+    -ms-flex: 30%; /* IE10 */
+    flex: 18%;
+    background-color: #f1f1f1;
+    padding: 20px;
+}
+
+/* 主要的内容区域 */
+.main {
+    -ms-flex: 70%; /* IE10 */
+    flex: 82%;
+    background-color: white;
+    padding: 20px;
+}
+
+select {
+    border:solid 1px #000;
+    width:10%;
+    text-align: center;
+}
+/* 测试图片 */
+.fakeimg {
+    background-color: #aaa;
+    width: 60%;
+    padding: 20px;
+}
+
+/* 底部 */
+.footer {
+    padding: 20px;
+    text-align: center;
+    background: #ddd;
+}
+
+.logC button {
+        width: 8%;
+        height: 25px;
+        background-color: lightslategrey;
+        border: none;
+        color: white;
+        font-size: 18px;
+        margin-left:65px;
+        hover:white;
+    }
+/* 响应式布局 - 在屏幕设备宽度尺寸小于 700px 时, 让两栏上下堆叠显示 */
+@media screen and (max-width: 700px) {
+    .row {
+        flex-direction: column;
+    }
+}
+
+/* 响应式布局 - 在屏幕设备宽度尺寸小于 400px 时, 让导航栏目上下堆叠显示 */
+@media screen and (max-width: 400px) {
+    .navbar a {
+        float: none;
+        width: 100%;
+    }
+}
+        </style>
+    </head>
+<body>
+{% load static %}
+        <div class="header">
+            <h1>哈尔滨工业大学电信学院实验室预约中心</h1>
+            <p>Laboratory Reservation Center of Telecom College, Harbin Institute of Technology</p>
+        </div>
+        <div class="navbar">
+            <a href=" #" onclick="javascript:history.go(-1);">👈返回上一页</a>
+            <a href="{% url 'tests:logout' %}" class="right">退出登录</a>
+            <a href="" class="right"  onclick="Res()">联系管理员</a>
+            <a href="{% url 'tests:change_pwd' %}" class="right">修改密码</a>
+            <a href="{% url 'tests:my_res' %}" class="right">我的预约</a>
+            <a href="{% url 'tests:m_r_p' %}" class="right">预约实验室</a>
+        </div>
+        <div class="row">
+            <div class="side">
+                <h2>{{ reservations.first.student.student_name }}</h2>
+                <div><img src="{% static 'images/head2.jpg' %}" alt=""/></div>
+                <h3><strong>♦学院：电信学院</strong></h3>
+                <h3><strong>♦学号：{{ student.student_num}}</strong></h3>
+                <h3><strong>♦班级：04 班</strong></h3>
+                <h3>&nbsp</h3>
+                <h3>&nbsp</h3>
+            </div>
+        <div class="main">
+            <h2>当前已生效预约:</h2>
+    <table width="50%" border="1">
         <form action="{% url 'tests:my_res' %}" method="POST">
         {% csrf_token %}
         <tr>
-            <th>序号</th>
-            <th>实验室</th>
-            <th>仪器</th>
-            <th>日期</th>
-            <th>预约时间</th>
-            <th>取消预约</th>
+            <th class="special">序号</th>
+            <th class="special">实验室</th>
+            <th class="special">仪器</th>
+            <th class="special">日期</th>
+            <th class="special">预约时间</th>
+            <th class="special">取消预约</th>
         </tr>
         {% for res in reservations %}
         <tr>
@@ -20,6 +218,7 @@
             <td>{{ res.yiqi.name }}</td>
             <td>第{{ res.week_ord_res }}周 星期{{ res.what_day }} 第{{ res.class_id }}节</td>
             <td>{{ res.res_time.year }}年{{ res.res_time.month }}月{{ res.res_time.day }}日 {{ res.res_time.hour }}:{{ res.res_time.minute }}</td>
+            <!-- 这里可以用过滤器写的 更简洁 -->
             <td>
                 <button type="submit" name="cancel" value="{{ res.id }}">取消预约{{ res.id }}</button>
             </td>
@@ -28,3 +227,10 @@
         </form>
     </table>
 </div>
+        </div>
+        <div class="footer">
+            <h2>电信4班科创小组</h2>
+        </div>
+
+</body>
+</html>

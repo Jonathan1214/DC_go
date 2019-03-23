@@ -1,20 +1,72 @@
-<p><h3>你好，管理员</h3></p>
-<strong>{{ staff.student_name }}</strong>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>电信学院实验室预约中心</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" http-equiv="Content-Type" content="width=device-width,initial-scale=0.3, minimum-scale0.3, maximum-scale=10.0, user-scalable=yes">
+    <style>
+        {% load static %}
+        #CenterList{
+            position: absolute;
+            top: 200px;
+            left: 600px;
+            width: 448px;
+            height: 300px;
+            background: url(../../static/images/back.jpg);
+            border-top-left-radius: 16px;
+        border-top-right-radius: 16px;
+        border-bottom-left-radius: 16px;
+        border-bottom-right-radius:16px;
+        }
+        h1{
+            position: absolute;
+            left: 135px;
+            top: 6.5px;
+        }
+        form{
+            position: absolute;
+            top: 140px;
+            left: 50px;
+        }
+        select{
+            width: 100px;
+            height: 25px;
+        }
+        .button{
+            background-color: #80bdff;
+            padding: 15px 35px;
+            font-size: 16px;
+            position: absolute;
+            left: 115px;
+            border-radius: 20px;
+        }
+}
+    </style>
+</head>
+<body>
+<div id="CenterList">
+    <h1><strong>管理员查询</strong></h1>
 <div>
-    <h1>查询框</h1>
     <form action="{% url 'tests:query_result' %}" method="GET">
-        <select name="query_lab" id="id_qlab">
+        实验室：
+        <select name="query_lab" id="id_qlab" >
             <option value="0" selected="selected"></option>
             <option value="1">lab1</option>
             <option value="2">lab2</option>
         </select>
+        实验周：
         <select name="query_week" id="id_qweek">
             <option value="0" selected="selected"></option>
             <option value="1">第一周</option>
             <option value="2">第二周</option>
             <!-- 先只作这两周的 -->
         </select>
-        <input type="submit" size="4" value="搜索">
+        <br>
+        <br>
+        <br>
+        <input class="button" type="submit" size="4" value="查询">
     </form>
-    <a href="{% url 'tests:logout' %}">退出登录</a>
 </div>
+</div>
+</body>
+</html>

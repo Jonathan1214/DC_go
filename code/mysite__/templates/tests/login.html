@@ -1,7 +1,8 @@
  <!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="textml; charset=utf-8">
+    <meta http-equiv="Content-Type" content="textml; charset=utf-8" name="viewport">
+    <meta content="width=device-width, initial-scale=0.3, maximum-scale=1.0, user-scalable=yes">
     <title>login</title>
     <style type="text/css">
         * {
@@ -184,7 +185,7 @@
                 <img src="../../static/images/psd.jpg" width="20" height="20" alt=""/><input id="pwd" type="text" name="password" placeholder="请输入密码（默认为学号）"/>
             </div>
             {% if message %}
-            <h4 align="center">{{ message }}</h4>
+                <h4 align="center">{{ message }}</h4>
             {% endif %}
             <div class="logC">
                 <button type="submit" name="submit">登录</button>

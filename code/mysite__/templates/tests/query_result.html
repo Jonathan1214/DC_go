@@ -1,5 +1,49 @@
-<h1>查询结果</h1>
-<p>这是查询结果，准备用表格展示</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        /*表格样式*/
+table{
+    table-layout: fixed;
+    empty-cells: show;
+    position: absolute;
+    top: 200px;
+    left: 400px;
+    border-collapse: collapse;
+    border: 1px solid #cad9ea;
+    color: #666;
+    font-size: 14px;
+    text-align: center;
+}
+caption{
+    font-size: 25px;
+}
+
+th{
+    background-repeat: repeat-x;
+    height: 30px;
+}
+th.tablehead{
+    background: #80bdff;
+    height: 40px;
+    font-size: 20px;
+}
+th.special{
+    background: #b8daff;
+}
+td{
+    height:30px;
+}
+        td,th{
+    border: 1px solid #cad9ea;
+    padding: 0 lem 0;
+}
+    </style>
+</head>
+<body>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=0.3, minimum-scale0.3, maximum-scale=10.0, user-scalable=yes"">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <p>
     {% if lab %}
         待查询的实验室：{{ lab.name }}
@@ -10,17 +54,17 @@
 </p>
 <!-- 先实现查询任意实验室任意周的预约情况 -->
 <p>
-    <table border="1">
-        <caption><strong>查询预约</strong></caption>
+    <table width="50%" border="1">
+        <th class="tablehead" colspan="8"><strong>当前预约名单</strong></th>
         <tr>
-            <th>序号</th>
-            <th>实验室</th>
-            <th>周次</th>
-            <th>星期</th>
-            <th>节次</th>
-            <th>预约人</th>
-            <th>学号</th>
-            <th>仪器</th>
+            <th class="special">序号</th>
+            <th class="special">实验室</th>
+            <th class="special">周次</th>
+            <th class="special">星期</th>
+            <th class="special">节次</th>
+            <th class="special">预约人</th>
+            <th class="special">学号</th>
+            <th class="special">仪器</th>
         </tr>
         {% for res in res_list %}
         <tr>
@@ -37,3 +81,5 @@
         {% endfor %}
     </table>
 </p>
+</body>
+</html>

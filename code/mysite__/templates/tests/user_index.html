@@ -3,8 +3,13 @@
     <head>
         <title>电信学院实验室预约中心</title>
         <meta charset="UTF-8">
-        <meta name="viewport" http-equiv="Content-Type" content="width=device-width, initial-scale=1">
-        <script></script>
+        <meta name="viewport" http-equiv="Content-Type" content="width=device-width,">
+        <meta content="width=device-width, initial-scale=0.3, maximum-scale=1.0, user-scalable=0" name="viewport">
+        <script type="text/javascript">
+        function Res() {
+            alert("功能暂未开放");
+        }
+    </script>
         <style>
             * {
     box-sizing: border-box;
@@ -68,7 +73,7 @@ body {
 /* 边栏 */
 .side {
     -ms-flex: 30%; /* IE10 */
-    flex: 20%;
+    flex: 18%;
     background-color: #f1f1f1;
     padding: 20px;
 }
@@ -76,7 +81,7 @@ body {
 /* 主要的内容区域 */
 .main {
     -ms-flex: 70%; /* IE10 */
-    flex: 80%;
+    flex: 82%;
     background-color: white;
     padding: 20px;
 }
@@ -119,6 +124,7 @@ body {
         </div>
         <div class="navbar">
             <a href="{% url 'tests:logout' %}" class="right">退出登录</a>
+            <a href="" class="right"  onclick="Res()">联系管理员</a>
             <a href="{% url 'tests:change_pwd' %}" class="right">修改密码</a>
             <a href="{% url 'tests:my_res' %}" class="right">我的预约</a>
             <a href="{% url 'tests:m_r_p' %}" class="right">预约实验室</a>
@@ -127,12 +133,11 @@ body {
             <div class="side">
                 <h2>{{ student.student_name }}</h2>
                 <div><img src="{% static 'images/head2.jpg' %}" alt=""/></div>
-                <p>关于我的介绍..</p>
-                <h3>更多内容</h3>
-                <p>我的更多内容</p>
-                <div class="fakeimg" style="height:60px;">这边插入图像</div><br>
-                <div class="fakeimg" style="height:60px;">这边插入图像</div><br>
-                <div class="fakeimg" style="height:60px;">这边插入图像</div>
+                <h3><strong>♦学院：电信学院</strong></h3>
+                <h3><strong>♦学号：{{ student.student_num}}</strong></h3>
+                <h3><strong>♦班级：04 班</strong></h3>
+                <h3>&nbsp</h3>
+                <h3>&nbsp</h3>
             </div>
             <div class="main">
                 <h1 align="center">欢迎进行实验室预约！</h1>

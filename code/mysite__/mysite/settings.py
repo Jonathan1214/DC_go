@@ -136,7 +136,7 @@ LOGIN_URL = '/tests/login/'
 
 
 # session
-SESSION_COOKIE_AGE = 60 * 30 # 30mins
+SESSION_COOKIE_AGE = 60 * 60 # 30mins
 SESSION_SAVE_EVERY_REQUEST = True
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True # 关闭浏览器，则COOKIE失效
 

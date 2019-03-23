@@ -3,8 +3,12 @@
 <head>
         <title>电信学院实验室预约中心</title>
         <meta charset="UTF-8">
-        <meta name="viewport" http-equiv="Content-Type" content="width=device-width, initial-scale=1">
-        <script></script>
+        <meta name="viewport" http-equiv="Content-Type" content="width=device-width,initial-scale=0.3, minimum-scale0.3, maximum-scale=10.0, user-scalable=yes">
+        <script type="text/javascript">
+        function Res() {
+            alert("功能暂未开放");
+        }
+    </script>
         <style>
             * {
     box-sizing: border-box;
@@ -28,6 +32,7 @@ body {
 .header h1 {
     font-size: 40px;
 }
+
 
 /* 导航 */
 .navbar {
@@ -68,7 +73,7 @@ body {
 /* 边栏 */
 .side {
     -ms-flex: 30%; /* IE10 */
-    flex: 20%;
+    flex: 18%;
     background-color: #f1f1f1;
     padding: 20px;
 }
@@ -76,11 +81,16 @@ body {
 /* 主要的内容区域 */
 .main {
     -ms-flex: 70%; /* IE10 */
-    flex: 80%;
+    flex: 82%;
     background-color: white;
     padding: 20px;
 }
 
+select {
+    border:solid 1px #000;
+    width:10%;
+    text-align: center;
+}
 /* 测试图片 */
 .fakeimg {
     background-color: #aaa;
@@ -95,6 +105,16 @@ body {
     background: #ddd;
 }
 
+.logC button {
+        width: 8%;
+        height: 25px;
+        background-color: lightslategrey;
+        border: none;
+        color: white;
+        font-size: 18px;
+        margin-left:65px;
+        hover:white;
+    }
 /* 响应式布局 - 在屏幕设备宽度尺寸小于 700px 时, 让两栏上下堆叠显示 */
 @media screen and (max-width: 700px) {
     .row {
@@ -118,7 +138,9 @@ body {
             <p>Laboratory Reservation Center of Telecom College, Harbin Institute of Technology</p>
         </div>
         <div class="navbar">
+            <a href=" #" onclick="javascript:history.go(-1);">👈返回上一页</a>
             <a href="{% url 'tests:logout' %}" class="right">退出登录</a>
+            <a href="" class="right"  onclick="Res()">联系管理员</a>
             <a href="{% url 'tests:change_pwd' %}" class="right">修改密码</a>
             <a href="{% url 'tests:my_res' %}" class="right">我的预约</a>
         </div>
@@ -126,29 +148,29 @@ body {
             <div class="side">
                 <h2>{{ student.student_name }}</h2>
                 <div><img src="{% static 'images/head2.jpg' %}" alt=""/></div>
-                <p>关于我的介绍..</p>
-                <h3>更多内容</h3>
-                <p>我的更多内容</p>
-                <div class="fakeimg" style="height:60px;">这边插入图像</div><br>
-                <div class="fakeimg" style="height:60px;">这边插入图像</div><br>
-                <div class="fakeimg" style="height:60px;">这边插入图像</div>
+                <h3><strong>♦学院：电信学院</strong></h3>
+                <h3><strong>♦学号：{{ student.student_num}}</strong></h3>
+                <h3><strong>♦班级：04 班</strong></h3>
+                <h3>&nbsp</h3>
+                <h3>&nbsp</h3>
             </div>
             <div class="main">
                 <!-- 下拉菜单选择实验室 周次 -->
         <form action="{% url 'tests:m_r_p' %}" method="POST">
         {% csrf_token %}
-        <p>
-            <select name="select_lab" id="id_lab">
-            {% for lab in labs%}
-                <option value="{{ lab.id }}">{{ lab.name }}</option>
-            {% endfor %}
+        <p class="logC">
+        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp实验室：<select name="select_lab" id="id_lab">
+        {% for lab in labs%}
+            <option value="{{ lab.id }}">{{ lab.name }}</option>
+        {% endfor %}
         </select>
-        </p>
+            &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp实验周：
             <select name="select_week" id='id_week'>
-                <option value="1">第一周</option>
-                <option value="2">第二周</option>
-            </select>
-        <p><button type="submit">查询</button></p>
+            <option value="1">第一周</option>
+            <option value="2">第二周</option>
+        </select>
+        <button type="submit" width="20px">查询</button>
+         </p>
         </form>
             </div>
         </div>
