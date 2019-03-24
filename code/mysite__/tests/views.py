@@ -15,7 +15,7 @@ def my_login_required(func):
         '''
         if request.session.has_key('user_id'):
             return func(request, **kargs)
-        return redirect('/tests/login/')
+        return redirect(reverse('tests:login'))
     return check_login_status
 
 
@@ -23,7 +23,7 @@ def index(request):
     '''
     return 'hello world'
     '''
-    return HttpResponse("hello world")
+    return redirect(reverse('tests:login'))
 
 # for test
 
@@ -87,7 +87,7 @@ def logout(request):
     #     return redirect()
     request.session.flush()
 
-    return redirect('/tests/login/')
+    return redirect(reverse('tests:login'))
 
 
 @my_login_required
@@ -153,7 +153,7 @@ def change_pwd(request):
         student = Student.objects.get(pk=pk)
         student.pwd = pwd2
         student.save()
-        return HttpResponseRedirect('/tests/login/')
+        return redirect(reverse('tests:login'))
         # return redirect('tests:login', )
     # 最后要改成一个重定向的页面！
     return render(request, 'tests/change_pwd.html', {'message': '两次输入密码不一致，请重新输入'})
@@ -237,7 +237,7 @@ def make_reserversion(request):
         res_day.save()
 
         # 这里用名称更好 redirect(reverse('tests:profile'))
-        return redirect('/tests/profile/')
+        return redirect(reverse('tests:profile'))
 
 
 @my_login_required
@@ -284,7 +284,7 @@ def my_res(request):
                     res_day.fri_res = 0
             res_day.save()
 
-        return redirect('/tests/profile/')
+        return redirect(reverse('tests:profile'))
 
     student = get_object_or_404(Student, id=request.session['user_id'])
     reservations = Reservation.objects.filter(

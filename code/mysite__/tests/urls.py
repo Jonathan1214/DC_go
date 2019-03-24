@@ -2,6 +2,7 @@ from django.urls import path
 from .import views
 
 app_name = 'tests' # 命名空间！
+# path('', views.index, name='index'),
 urlpatterns = [
     path('', views.index, name='index'),
     path('your_name/', views.get_name, name='get_name'),
