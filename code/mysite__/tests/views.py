@@ -7,6 +7,9 @@ from .forms import LoginForm, NameForm
 from .models import Student, Lab, Instrument, Day, Reservation
 
 
+# 后期再加
+class_ = ['一班', '二班', '三班', '四班', '五班', '六班', '七班', '八班', '九班', '十班']
+
 # 自己定义一个装饰器好了
 def my_login_required(func):
     def check_login_status(request, **kargs):
@@ -190,10 +193,10 @@ def make_reserversion(request):
         # 获取各种id
         req_inst = request.POST.getlist('inst_list', [])    # 仪器
         req_lab_cls = request.POST.get('res')
-        lab_id = int(req_lab_cls[0])
-        weekday = int(req_lab_cls[1])
-        class_id = int(req_lab_cls[2])
-        week_ord = int(req_lab_cls[3])
+        lab_id = int(req_lab_cls[0])           # 实验室
+        weekday = int(req_lab_cls[1])          # 星期
+        class_id = int(req_lab_cls[2])         # 节次
+        week_ord = int(req_lab_cls[3])         # 周
         student_id = request.session['user_id']
 
         # 获取预约的内容
@@ -209,36 +212,52 @@ def make_reserversion(request):
         # what_day = models.IntegerField.objects.create(weekday)
 
         # 这里应该要加上一个try排错才好
-        Reservation.objects.create(
-            student=student,
-            lab=lab,
-            yiqi=yiqi,
-            week_ord_res=week_ord,
-            class_id=class_id,
-            what_day=weekday,
-            res_time=datetime.now()
-        )
 
-        if yiqi:
-            yiqi.used += 1
-            yiqi.save()
+        # 几个判断条件
+        # 1.每节课的预约人数不能超过上限 最多 8 人每节课
+        # 2.每个人的预约次数有上限 不如就一周三次
 
-        res_day = lab.day_set.filter(week_ord=week_ord, class_ord=class_id)[0]
-        if weekday == 1:
-            res_day.mon_res += 1
-        elif weekday == 2:
-            res_day.tues_res += 1
-        elif weekday == 3:
-            res_day.wed_res += 1
-        elif weekday == 4:
-            res_day.thurs_res += 1
+        man_can_reserve = 1 if len(Reservation.objects.filter(student=student, week_ord_res=week_ord)) < 3 else 0
+        # 教室
+        class_can_reservered = 1 if len(Reservation.objects.filter(lab=lab, week_ord_res=week_ord, what_day=weekday, class_id=class_id)) < 8 else 0
+
+        if man_can_reserve and class_can_reservered:
+            Reservation.objects.create(
+                student=student,
+                lab=lab,
+                yiqi=yiqi,
+                week_ord_res=week_ord,
+                class_id=class_id,
+                what_day=weekday,
+                res_time=datetime.now()
+            )
+
+            if yiqi:
+                yiqi.used += 1
+                yiqi.save()
+
+            res_day = lab.day_set.filter(week_ord=week_ord, class_ord=class_id)[0]
+            if weekday == 1:
+                res_day.mon_res += 1
+            elif weekday == 2:
+                res_day.tues_res += 1
+            elif weekday == 3:
+                res_day.wed_res += 1
+            elif weekday == 4:
+                res_day.thurs_res += 1
+            else:
+                res_day.fri_res += 1
+            res_day.save()
+
+            # 这里用名称更好 redirect(reverse('tests:profile'))
+            return redirect(reverse('tests:profile'))
+
+        elif man_can_reserve:
+            message = "当前教室无法预约"
         else:
-            res_day.fri_res += 1
-        res_day.save()
+            message = "本周预约次数已到达上限"
 
-        # 这里用名称更好 redirect(reverse('tests:profile'))
-        return redirect(reverse('tests:profile'))
-
+        return HttpResponse(message)
 
 @my_login_required
 def my_res(request):
@@ -290,4 +309,4 @@ def my_res(request):
     reservations = Reservation.objects.filter(
         student=student)  # 可以获取多个res么 应该可以吧 那这里返回的就是一个数组
 
-    return render(request, 'tests/my_res.html', {'reservations': reservations})
+    return render(request, 'tests/my_res.html', {'reservations': reservations, 'student': student})
