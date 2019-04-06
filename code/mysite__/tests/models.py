@@ -79,6 +79,8 @@ class Reservation(models.Model):
 
     res_time = models.DateTimeField(null=True)
 
+    capta = models.CharField(max_length=4, null=True)
+
 # class class_time(models.Model):
     # start = models.TimeField()  # 开始时间 其实这张表都是不可更改的
     # duration = models.DurationField()

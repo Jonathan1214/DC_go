@@ -5,7 +5,7 @@ from django.db import models
 from datetime import datetime
 from .forms import LoginForm, NameForm
 from .models import Student, Lab, Instrument, Day, Reservation
-
+import random
 
 # 后期再加
 class_ = ['一班', '二班', '三班', '四班', '五班', '六班', '七班', '八班', '九班', '十班']
@@ -184,6 +184,17 @@ def make_reserversion_pre(request):
     return render(request, 'tests/make_res.html', {'student': student, 'labs': labs})
 
 
+def generate_capta():
+    '''
+    生成四位随机数验证码
+    '''
+    a = ''
+    for i in range(4):
+        ch = chr(random.randrange(ord('0'),ord('9') + 1))
+        a += ch
+    return a
+
+
 @my_login_required
 def make_reserversion(request):
     '''
@@ -216,12 +227,15 @@ def make_reserversion(request):
         # 几个判断条件
         # 1.每节课的预约人数不能超过上限 最多 8 人每节课
         # 2.每个人的预约次数有上限 不如就一周三次
+        # 3.一个人不能预约重复预约一个教室
 
         man_can_reserve = 1 if len(Reservation.objects.filter(student=student, week_ord_res=week_ord)) < 3 else 0
         # 教室
+        hasnt_reserved_the_class = 1 if not Reservation.objects.filter(student=student, week_ord_res=week_ord, what_day=weekday, class_id=class_id) else 0
+        # 是否已经预约了这个教室
         class_can_reservered = 1 if len(Reservation.objects.filter(lab=lab, week_ord_res=week_ord, what_day=weekday, class_id=class_id)) < 8 else 0
 
-        if man_can_reserve and class_can_reservered:
+        if man_can_reserve and class_can_reservered and hasnt_reserved_the_class:
             Reservation.objects.create(
                 student=student,
                 lab=lab,
@@ -229,7 +243,8 @@ def make_reserversion(request):
                 week_ord_res=week_ord,
                 class_id=class_id,
                 what_day=weekday,
-                res_time=datetime.now()
+                res_time=datetime.now(),
+                capta=generate_capta()
             )
 
             if yiqi:
@@ -253,7 +268,7 @@ def make_reserversion(request):
             return redirect(reverse('tests:profile'))
 
         elif man_can_reserve:
-            message = "当前教室无法预约"
+            message = "当前教室无法预约或您已经预约此教室"
         else:
             message = "本周预约次数已到达上限"
 
