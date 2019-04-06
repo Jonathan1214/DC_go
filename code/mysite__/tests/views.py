@@ -1,3 +1,4 @@
+import random, hashlib
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
@@ -5,7 +6,6 @@ from django.db import models
 from datetime import datetime
 from .forms import LoginForm, NameForm
 from .models import Student, Lab, Instrument, Day, Reservation
-import random
 
 # 后期再加
 class_ = ['一班', '二班', '三班', '四班', '五班', '六班', '七班', '八班', '九班', '十班']
@@ -21,6 +21,10 @@ def my_login_required(func):
         return redirect(reverse('tests:login'))
     return check_login_status
 
+def md5(pwd):
+    md5_pwd = hashlib.md5(bytes('MyLib', encoding='utf-8'))
+    md5_pwd.update(bytes(pwd, encoding='utf-8'))
+    return md5_pwd.hexdigest()#返回加密的数据
 
 def index(request):
     '''
@@ -69,7 +73,8 @@ def login(request):
             student = None
 
         if student:
-            if student.pwd == pwd:
+            # 比较 hash 值
+            if student.pwd == md5(pwd):
                 request.session['is_login'] = True
                 request.session['user_id'] = student.id
                 request.session['username'] = student.student_num
@@ -154,7 +159,7 @@ def change_pwd(request):
     pwd2 = request.POST.get('pwd2')
     if pwd1 == pwd2 and len(pwd1) > 5:
         student = Student.objects.get(pk=pk)
-        student.pwd = pwd2
+        student.pwd = md5(pwd2)
         student.save()
         return redirect(reverse('tests:login'))
         # return redirect('tests:login', )
@@ -325,3 +330,12 @@ def my_res(request):
         student=student)  # 可以获取多个res么 应该可以吧 那这里返回的就是一个数组
 
     return render(request, 'tests/my_res.html', {'reservations': reservations, 'student': student})
+
+
+def update_Data():
+    '''
+    hash密码储存
+    '''
+    for stu in Student.objects.all():
+        stu.pwd = md5(stu.pwd)
+        stu.save()

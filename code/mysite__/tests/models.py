@@ -6,7 +6,7 @@ from django.db import models
 class Student(models.Model):
     student_num = models.CharField(max_length=10)
     student_name = models.CharField(max_length=20)
-    pwd = models.CharField(max_length=30)
+    pwd = models.CharField(max_length=100)
 
     is_staff = models.BooleanField(default=False)
 
