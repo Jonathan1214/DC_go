@@ -16,6 +16,7 @@ urlpatterns = [
     path('make-resvervation/', views.make_reserversion_pre, name='m_r_p'),
     path('make_res-t/', views.make_reserversion, name='m_r_t'),
     path('change_pwd/', views.change_pwd, name='change_pwd'),
+    path('contact/', views.contact, name='contact'),
 ]
 # 终于知道这个'name'有什么用了！
 # 故：在模板中使用：{% url 'app_name:name' param %}就可以映射到这个地方来！

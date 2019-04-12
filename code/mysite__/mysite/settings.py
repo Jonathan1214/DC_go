@@ -141,3 +141,13 @@ SESSION_COOKIE_AGE = 60 * 60 # 30mins
 SESSION_SAVE_EVERY_REQUEST = True
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True # 关闭浏览器，则COOKIE失效
 
+
+# email
+EMAIL_BACKEND = 'django.core.main.backends.smtp.EmailBackend'
+EMAIL_USE_SSL = True
+EMAIL_HOST = 'smtp.qq.com'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = '1311772940@qq.com'
+EMAIL_HOST_PASSWORD = 'ezntkagixxfpfjde'
+
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

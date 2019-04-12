@@ -6,9 +6,9 @@
         <meta name="viewport" http-equiv="Content-Type" content="width=device-width,">
         <meta content="width=device-width, initial-scale=0.2, maximum-scale=1.0, user-scalable=yes" name="viewport">
         <script type="text/javascript">
-        function Res() {
-            alert("功能暂未开放");
-        }
+        // function Res() {
+        //     alert("功能暂未开放");
+        // }
     </script>
         <style>
             * {
@@ -124,7 +124,7 @@ body {
         </div>
         <div class="navbar">
             <a href="{% url 'tests:logout' %}" class="right">退出登录</a>
-            <a href="" class="right"  onclick="Res()">联系管理员</a>
+            <a href="{% url 'tests:contact' %}" class="right" >联系管理员</a>
             <a href="{% url 'tests:change_pwd' %}" class="right">修改密码</a>
             <a href="{% url 'tests:my_res' %}" class="right">我的预约</a>
             <a href="{% url 'tests:m_r_p' %}" class="right">预约实验室</a>

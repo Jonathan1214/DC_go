@@ -1,6 +1,8 @@
 import random, hashlib
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
+from django.core.mail import send_mail
+from django.conf import settings
 from django.urls import reverse
 from django.db import models
 from datetime import datetime
@@ -161,7 +163,7 @@ def change_pwd(request):
         student = Student.objects.get(pk=pk)
         student.pwd = md5(pwd2)
         student.save()
-        return redirect(reverse('tests:login'))
+        return redirect(reverse('tests:profile'))
         # return redirect('tests:login', )
     # 最后要改成一个重定向的页面！
     return render(request, 'tests/change_pwd.html', {'message': '两次输入密码不一致，请重新输入'})
@@ -279,6 +281,7 @@ def make_reserversion(request):
 
         return HttpResponse(message)
 
+
 @my_login_required
 def my_res(request):
     if request.method == 'POST':
@@ -332,10 +335,27 @@ def my_res(request):
     return render(request, 'tests/my_res.html', {'reservations': reservations, 'student': student})
 
 
-def update_Data():
+def contact(request):
     '''
-    hash密码储存
+    提前
     '''
-    for stu in Student.objects.all():
-        stu.pwd = md5(stu.pwd)
-        stu.save()
+    pass
+
+
+def send_email(request):
+    '''
+    发送邮件
+    '''
+    subject = "MyLab实验室预约管理系统问题反馈"
+    msg = request.GET.get('feedback', '')
+    from_email = request.GET.get('from_email', '')
+    to_addr = '407046678@qq.com'
+
+    if msg and from_email:
+        try:
+            send_mail(subject, msg, from_email, [to_addr])
+        except:
+            return HttpResponse("Invaild header found")
+        return redirect(reverse('tests:thanks'))
+    else:
+        return HttpResponse('请输入正确的信息')

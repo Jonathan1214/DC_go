@@ -10,6 +10,10 @@ class Student(models.Model):
 
     is_staff = models.BooleanField(default=False)
 
+    class Meta:
+        verbose_name = '学生'
+        verbose_name_plural = '学生'
+
     def __str__(self):
         return self.student_name
 
@@ -23,6 +27,10 @@ class Lab(models.Model):
     yuyue = models.ManyToManyField(
         Student, through='Reservation', through_fields=('lab', 'student'))
 
+    class Meta:
+        verbose_name = '实验室'
+        verbose_name_plural = '实验室'
+
     def __str__(self):
         return self.name
 
@@ -34,6 +42,9 @@ class Instrument(models.Model):
     # 把实验室和仪器关联起来 方便查询
     to_lab = models.ForeignKey(Lab, on_delete=models.CASCADE)
 
+    class Meta:
+        verbose_name = '仪器'
+        verbose_name_plural = '仪器'
     def __str__(self):
         return self.name
 
@@ -58,7 +69,9 @@ class Day(models.Model):
 
     #  课程时间什么的直接在HTML里面写 省去了
     day_to_lab = models.ForeignKey(Lab, on_delete=models.CASCADE)
-
+    class Meta:
+        verbose_name = '实验日期安排'
+        verbose_name_plural = '实验日期安排'
     # def __str__(self):
     #     return self.week_name
     # 我到现在也不太明白这个表的作用，但是当初是什么东西促使我写下这个表呢，我想不太起来了，只知道它一定有着不可替代的作用
@@ -80,7 +93,9 @@ class Reservation(models.Model):
     res_time = models.DateTimeField(null=True)
 
     capta = models.CharField(max_length=4, null=True)
-
+    class Meta:
+        verbose_name = '预约'
+        verbose_name_plural = '预约'
 # class class_time(models.Model):
     # start = models.TimeField()  # 开始时间 其实这张表都是不可更改的
     # duration = models.DurationField()
