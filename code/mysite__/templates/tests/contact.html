@@ -1,0 +1,14 @@
+<form action="" method="POST">
+    {% csrf_token %}
+    <p>
+        主题：<input type="text" name="subject" id="">
+    </p>
+    <p>
+        邮箱：<input type="email" name="from_email" id="">
+    </p>
+    问题描述：
+    <p>
+        <textarea name="feedback" id="" cols="30" rows="10"></textarea>
+    </p>
+    <input type="submit" value="提交">
+</form>

@@ -140,7 +140,7 @@ select {
         <div class="navbar">
             <a href=" #" onclick="javascript:history.go(-1);">👈返回上一页</a>
             <a href="{% url 'tests:logout' %}" class="right">退出登录</a>
-            <a href="" class="right"  onclick="Res()">联系管理员</a>
+            <a href="{% url 'tests:contact' %}" class="right">联系管理员</a>
             <a href="{% url 'tests:change_pwd' %}" class="right">修改密码</a>
             <a href="{% url 'tests:my_res' %}" class="right">我的预约</a>
         </div>

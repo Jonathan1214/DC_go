@@ -143,7 +143,7 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True # 关闭浏览器，则COOKIE失效
 
 
 # email
-EMAIL_BACKEND = 'django.core.main.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_SSL = True
 EMAIL_HOST = 'smtp.qq.com'
 EMAIL_PORT = 465

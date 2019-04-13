@@ -1,4 +1,5 @@
-import random, hashlib
+import random
+import hashlib
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.core.mail import send_mail
@@ -13,6 +14,8 @@ from .models import Student, Lab, Instrument, Day, Reservation
 class_ = ['一班', '二班', '三班', '四班', '五班', '六班', '七班', '八班', '九班', '十班']
 
 # 自己定义一个装饰器好了
+
+
 def my_login_required(func):
     def check_login_status(request, **kargs):
         '''
@@ -23,10 +26,12 @@ def my_login_required(func):
         return redirect(reverse('tests:login'))
     return check_login_status
 
+
 def md5(pwd):
     md5_pwd = hashlib.md5(bytes('MyLib', encoding='utf-8'))
     md5_pwd.update(bytes(pwd, encoding='utf-8'))
-    return md5_pwd.hexdigest()#返回加密的数据
+    return md5_pwd.hexdigest()  # 返回加密的数据
+
 
 def index(request):
     '''
@@ -197,7 +202,7 @@ def generate_capta():
     '''
     a = ''
     for i in range(4):
-        ch = chr(random.randrange(ord('0'),ord('9') + 1))
+        ch = chr(random.randrange(ord('0'), ord('9') + 1))
         a += ch
     return a
 
@@ -236,11 +241,14 @@ def make_reserversion(request):
         # 2.每个人的预约次数有上限 不如就一周三次
         # 3.一个人不能预约重复预约一个教室
 
-        man_can_reserve = 1 if len(Reservation.objects.filter(student=student, week_ord_res=week_ord)) < 3 else 0
+        man_can_reserve = 1 if len(Reservation.objects.filter(
+            student=student, week_ord_res=week_ord)) < 3 else 0
         # 教室
-        hasnt_reserved_the_class = 1 if not Reservation.objects.filter(student=student, week_ord_res=week_ord, what_day=weekday, class_id=class_id) else 0
+        hasnt_reserved_the_class = 1 if not Reservation.objects.filter(
+            student=student, week_ord_res=week_ord, what_day=weekday, class_id=class_id) else 0
         # 是否已经预约了这个教室
-        class_can_reservered = 1 if len(Reservation.objects.filter(lab=lab, week_ord_res=week_ord, what_day=weekday, class_id=class_id)) < 8 else 0
+        class_can_reservered = 1 if len(Reservation.objects.filter(
+            lab=lab, week_ord_res=week_ord, what_day=weekday, class_id=class_id)) < 8 else 0
 
         if man_can_reserve and class_can_reservered and hasnt_reserved_the_class:
             Reservation.objects.create(
@@ -258,7 +266,8 @@ def make_reserversion(request):
                 yiqi.used += 1
                 yiqi.save()
 
-            res_day = lab.day_set.filter(week_ord=week_ord, class_ord=class_id)[0]
+            res_day = lab.day_set.filter(
+                week_ord=week_ord, class_ord=class_id)[0]
             if weekday == 1:
                 res_day.mon_res += 1
             elif weekday == 2:
@@ -335,18 +344,41 @@ def my_res(request):
     return render(request, 'tests/my_res.html', {'reservations': reservations, 'student': student})
 
 
+@my_login_required
 def contact(request):
     '''
-    提前
+    contact and send email to staff
     '''
-    pass
+    if request.method == 'POST':
+        # 邮件头
+        subject = request.POST.get('subject', '')
+        from_email = request.POST.get('from_email', '')
+        msg = request.POST.get('feedback', '')
+        # 详细发送人
+        student = Student.objects.get(id=request.session['user_id'])
+        add_msg = '发送人：' + student.student_num + student.student_name
+        msg = msg + '\n' + add_msg
+        # return HttpResponse(subject)
+        to_addr = '407046678@qq.com'
+
+        if msg and from_email and subject:
+            try:
+                send_mail(subject, msg, from_email, [to_addr])
+            except:
+                return HttpResponse("Invaild header found")
+            return redirect(reverse('tests:profile'))
+        else:
+            return HttpResponse('请输入正确的信息')
+    return render(request, 'tests/contact.html')
 
 
+@my_login_required
 def send_email(request):
     '''
     发送邮件
     '''
-    subject = "MyLab实验室预约管理系统问题反馈"
+    student = student.objects.get(id=request.session)
+    subject = request.GET.get('subject', '')
     msg = request.GET.get('feedback', '')
     from_email = request.GET.get('from_email', '')
     to_addr = '407046678@qq.com'
