@@ -221,7 +221,7 @@ def make_reserversion(request):
         class_id = int(req_lab_cls[2])         # 节次
         week_ord = int(req_lab_cls[3])         # 周
         student_id = request.session['user_id']
-
+        capta = generate_capta()
         # 获取预约的内容
         student = Student.objects.get(pk=student_id)
         lab = Lab.objects.get(pk=lab_id)
@@ -259,7 +259,7 @@ def make_reserversion(request):
                 class_id=class_id,
                 what_day=weekday,
                 res_time=datetime.now(),
-                capta=generate_capta()
+                capta=capta
             )
 
             if yiqi:
@@ -281,6 +281,21 @@ def make_reserversion(request):
             res_day.save()
 
             # 这里用名称更好 redirect(reverse('tests:profile'))
+####################################### 发送邮件
+            subject = "预约验证码"
+            from_email = settings.DEFAULT_FROM_EMAIL
+            send_msg = {'week': week_ord, 'whatday': weekday, 'class_id': class_id, 'lab': lab.name,
+                    'address': lab.address, 'capta': capta}
+            msg = "您预约第{week}周星期{whatday}第{class_id}节课在{lab}（地址：{address}）的实验已经生效，进入实验室的验证码为：{capta}，请按时去实验室完成实验。\n祝您好运\
+                \n              MyLab团队".format(**send_msg)
+            to_addr = '{}@stu.hit.edu.cn'.format(student.student_num)
+            try:
+                send_mail(subject, msg, from_email, [to_addr])
+                send_mail('发送失败', '预约邮件发送成功，注意查看', from_email, ['407046678@qq.com'])
+            except:
+                send_mail('发送失败', '预约邮件发送失败，注意查看。原邮件内容：'+msg,
+                         from_email, ['407046678@qq.com'])
+############################################
             return redirect(reverse('tests:profile'))
 
         elif man_can_reserve:
@@ -377,7 +392,7 @@ def send_email(request):
     '''
     发送邮件
     '''
-    student = student.objects.get(id=request.session)
+    student = Student.objects.get(id=request.session)
     subject = request.GET.get('subject', '')
     msg = request.GET.get('feedback', '')
     from_email = request.GET.get('from_email', '')
