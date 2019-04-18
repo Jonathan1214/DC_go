@@ -102,3 +102,5 @@ class Reservation(models.Model):
 
 
 # 花里胡哨的东西都不要加了 什么meta啊 元啊！在后期有时间再来修改 让这个东西更加完美
+
+# bulk_create()批量添加信息

@@ -159,19 +159,19 @@ def query_result(request):
 
 @my_login_required
 def change_pwd(request):
-    if request.method == 'GET':
-        return render(request, 'tests/change_pwd.html')
     pk = request.session['user_id']
+    student = Student.objects.get(pk=pk)
+    if request.method == 'GET':
+        return render(request, 'tests/change_pwd.html', {'student': student})
     pwd1 = request.POST.get('pwd1')
     pwd2 = request.POST.get('pwd2')
     if pwd1 == pwd2 and len(pwd1) > 5:
-        student = Student.objects.get(pk=pk)
         student.pwd = md5(pwd2)
         student.save()
         return redirect(reverse('tests:profile'))
         # return redirect('tests:login', )
     # 最后要改成一个重定向的页面！
-    return render(request, 'tests/change_pwd.html', {'message': '两次输入密码不一致，请重新输入'})
+    return render(request, 'tests/change_pwd.html', {'message': '两次输入密码不一致，请重新输入', 'student': student})
 
 
 @my_login_required
@@ -285,7 +285,7 @@ def make_reserversion(request):
             subject = "预约验证码"
             from_email = settings.DEFAULT_FROM_EMAIL
             send_msg = {'week': week_ord, 'whatday': weekday, 'class_id': class_id, 'lab': lab.name,
-                    'address': lab.address, 'capta': capta}
+                        'address': lab.address, 'capta': capta}
             msg = "您预约第{week}周星期{whatday}第{class_id}节课在{lab}（地址：{address}）的实验已经生效，进入实验室的验证码为：{capta}，请按时去实验室完成实验。\n祝您好运\
                 \n              MyLab团队".format(**send_msg)
             to_addr = '{}@stu.hit.edu.cn'.format(student.student_num)
