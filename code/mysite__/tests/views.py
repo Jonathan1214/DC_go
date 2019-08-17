@@ -96,6 +96,32 @@ def login(request):
     return render(request, 'tests/login.html', {'message': message})
 
 
+def register(request):
+    message = ''
+    if request.method == 'POST':
+        st_id = request.POST.get("st_id") # 是否需要验证 id 存在
+        st_name = request.POST.get("st_name")
+        pwd_first = request.POST.get("pwd_first")
+        pwd_again = request.POST.get("pwd_again")
+
+        if Student.objects.get(student_num=st_id):
+            message = '学号已存在'
+            return render(request, 'tests/register.html', {'message': message})
+
+        if pwd_first == pwd_again:
+            Student.objects.create(
+                student_num=st_id,
+                student_name=st_name,
+                pwd=md5(pwd_again),
+                is_staff=False
+            )
+            return redirect(reverse('tests:login'))
+
+        message = '两次输入密码不一致'
+        return render(request, 'tests/register.html', {'message': message})
+
+    return render(request, 'tests/register.html', {'message': message})
+
 @my_login_required
 def logout(request):
     # if not request.session.get('is_login', None):

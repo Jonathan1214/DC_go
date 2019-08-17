@@ -1,0 +1,11 @@
+<form action="" method="post">
+    {% csrf_token %}
+    <p><span>名字</span><input type="text" name="st_name" placeholder="名字"></p>
+    <p><span>学号</span><input type="text" name="st_id" placeholder="学号"></p>
+    <p><span>密码</span><input type="password" name="pwd_first" placeholder="密码"></p>
+    <p><span>再次输入密码</span><input type="password" name="pwd_again" placeholder="再次输入密码"></p>
+    <p><button type="submit" name="submit">注册</button></p>
+{% if message %}
+    <p>{{ message }}</p>
+{% endif %}
+</form>
