@@ -1,14 +1,107 @@
-<form action="" method="POST">
+<!DOCTYPE html>
+<html>
+<head>
+     <title>联系管理员</title>
+    <meta http-equiv="Content-Type" content="textml; charset=utf-8" name="viewport">
+    <meta content="width=device-width, initial-scale=0.2, maximum-scale=1.0, user-scalable=yes">
+    <title>regist</title>
+    <style type="text/css">
+          /* 标题 */
+.header {
+    padding: 60px;
+    text-align: center;
+    background: #66CCCC;
+    color: white;
+}
+.text-main {
+    position: static;
+}
+.text-main input {
+    outline-style: none ;
+    border: 1px solid #ccc; 
+    border-radius: 3px;
+    padding: 13px 14px;
+    width: 420px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: "Microsoft soft";
+}
+.text-main button {
+    position: absolute;
+    top: 615px;
+    left: 930px;
+    background-color: #4487d3;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 12px;
+}
+.text-main p1 {
+    color: black;
+    font-size: 18px;
+    position: absolute;
+    top: 285px;
+    left: 500px;
+}
+.text-main p2 {
+    color: black;
+    font-size: 18px;
+    position: absolute;
+    top: 335px;
+    left: 500px;
+}
+.text-main p3 {
+    color: black;
+    font-size: 18px;
+    position: absolute;
+    top: 385px;
+    left: 465px;
+}
+.text-main p3 textarea {
+    position: absolute;
+    top: 20px;
+    left: 85px;
+    outline-style: none ;
+    border: 1px solid #ccc; 
+    border-radius: 3px;
+    padding: 13px 14px;
+    width: 425px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: "Microsoft soft";
+}
+/* 标题字体加大 */
+.header h1 {
+    font-size: 40px;
+}
+
+    </style>
+    </head>
+<body>
+     <div class="header">
+                <h1>哈尔滨工业大学电信学院实验室预约中心</h1>
+                <p>Laboratory Reservation Center of Telecom College, Harbin Institute of Technology</p>
+        </div>   
+    <form class="text-main" action="" method="POST">
     {% csrf_token %}
-    <p>
+    <p1 align="center">
         主题：<input type="text" name="subject" id="">
-    </p>
-    <p>
-        邮箱：<input type="email" name="from_email" id="">
-    </p>
-    问题描述：
-    <p>
-        <textarea name="feedback" id="" cols="30" rows="10"></textarea>
-    </p>
-    <input type="submit" value="提交">
+    </p1>
+    <p2 align="center">
+        邮箱：<input type="email" placeholder="邮件将发送至：jonathan0101@gmail.com" name="from_email" id="">
+    </p2>
+    <p3 align="center">
+        问题描述：&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+        <p>&nbsp&nbsp</p>
+        <textarea name="feedback" id="" cols="25" rows="10" required></textarea>
+    </p3>
+    <button type="submit" value="提交">提交</button>
 </form>
+</body>
+</html>

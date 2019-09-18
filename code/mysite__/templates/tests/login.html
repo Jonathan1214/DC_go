@@ -46,12 +46,19 @@
     .logC button {
         width: 100%;
         height: 45px;
-        background-color: #ee7700;
+        background-color: #4ebaf8;
         border: none;
         color: white;
         font-size: 18px;
     }
-
+    .logC a {
+        float: left;
+        display: block;
+        color: #4d8f75;
+        text-align: center;
+        padding: 14px 20px;
+        text-decoration: none;
+    }
     .logGet .logD.logDtip .p1 {
         display: inline-block;
         font-size: 28px;
@@ -189,10 +196,12 @@
             {% endif %}
             <div class="logC">
                 <button type="submit" name="submit">登录</button>
+                <div><p> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</p></div>
+                <a href="{% url 'tests:register' %}">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp还没有账号？点这里注册</a>
             </div>
         </form>
      </div>
-     <div><a href="{% url 'tests:register' %}">注册</a></div>
+     
 </div>
 <div class="footer" id="foot">
     <div class="copyright"><p>Copyright © 2018 xxxxx.com Inc. All Rights Reserved.</p>

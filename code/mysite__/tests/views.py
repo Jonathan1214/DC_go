@@ -104,9 +104,9 @@ def register(request):
         pwd_first = request.POST.get("pwd_first")
         pwd_again = request.POST.get("pwd_again")
 
-        if Student.objects.get(student_num=st_id):
-            message = '学号已存在'
-            return render(request, 'tests/register.html', {'message': message})
+        # if Student.objects.get(student_num=st_id):
+        #     message = '学号已存在'
+        #     return render(request, 'tests/register.html', {'message': message})
 
         if pwd_first == pwd_again:
             Student.objects.create(

@@ -1,11 +1,97 @@
-<form action="" method="post">
+<!DOCTYPE html>
+<html>
+<head>
+     <title>注册..</title>
+    <meta http-equiv="Content-Type" content="textml; charset=utf-8" name="viewport">
+    <meta content="width=device-width, initial-scale=0.2, maximum-scale=1.0, user-scalable=yes">
+    <title>regist</title>
+    <style type="text/css">
+          /* 标题 */
+.header {
+    padding: 60px;
+    text-align: center;
+    background: #66CCCC;
+    color: white;
+}
+.text-main {
+    position: static;
+}
+.text-main input {
+    outline-style: none ;
+    border: 1px solid #ccc; 
+    border-radius: 3px;
+    padding: 13px 14px;
+    width: 420px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: "Microsoft soft";
+}
+.text-main button {
+    position: absolute;
+    top: 535px;
+    left: 920px;
+    background-color: #1767fd;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 12px;
+}
+.text-main p1 {
+    color: black;
+    font-size: 18px;
+    position: absolute;
+    top: 285px;
+    left: 500px;
+}
+.text-main p2 {
+    color: black;
+    font-size: 18px;
+    position: absolute;
+    top: 355px;
+    left: 500px;
+}
+.text-main p3 {
+    color: black;
+    font-size: 18px;
+    position: absolute;
+    top: 425px;
+    left: 500px;
+}
+.text-main p4 {
+    color: black;
+    font-size: 18px;
+    position: absolute;
+    top: 485px;
+    left: 428px;
+}
+/* 标题字体加大 */
+.header h1 {
+    font-size: 40px;
+}
+
+    </style>
+    </head>
+<body>
+     <div class="header">
+                <h1>哈尔滨工业大学电信学院实验室预约中心</h1>
+                <p>Laboratory Reservation Center of Telecom College, Harbin Institute of Technology</p>
+        </div>   
+<form class="text-main" action="" method="post">
     {% csrf_token %}
-    <p><span>名字</span><input type="text" name="st_name" placeholder="名字"></p>
-    <p><span>学号</span><input type="text" name="st_id" placeholder="学号"></p>
-    <p><span>密码</span><input type="password" name="pwd_first" placeholder="密码"></p>
-    <p><span>再次输入密码</span><input type="password" name="pwd_again" placeholder="再次输入密码"></p>
-    <p><button type="submit" name="submit">注册</button></p>
+    <p1><span>名字:</span><input type="text" name="st_name" placeholder="名字"></p1>
+    <p2><span>学号:</span><input type="text" name="st_id" placeholder="学号"></p2>
+    <p3><span>密码:</span><input type="password" name="pwd_first" placeholder="密码"></p3>
+    <p4><span>再次输入密码:</span><input type="password" name="pwd_again" placeholder="再次输入密码"></p4>
+    <button type="submit" name="submit">注册</button>
 {% if message %}
     <p>{{ message }}</p>
 {% endif %}
 </form>
+</body>
+</html>
