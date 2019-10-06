@@ -130,6 +130,9 @@ USE_TZ = False
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
 # 使用@login_requiered装饰器 未登录时的自动跳转页面
 # 重定向URL?
 LOGIN_URL = '/tests/login/'

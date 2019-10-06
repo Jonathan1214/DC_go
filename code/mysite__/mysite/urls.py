@@ -14,11 +14,17 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import include, path,re_path
+from django.conf import settings
+from django.views.static import serve
+from mysite.settings import MEDIA_ROOT
 
 urlpatterns = [
-    path('', include('tests.urls', namespace='index')),
+    path('', include('tests.urls', namespace='tests')),
     path('polls/', include('polls.urls', namespace='polls')),
     path('admin/', admin.site.urls),
+    path('ZhangChunbo/', include('index.urls', namespace='index')),
+    re_path(r'^media/(?P<path>.*)$', serve, {'document_root': MEDIA_ROOT}),
 ]
 # path('accounts/', include('students.urls', namespace='students')),
+# 加上最后一行 现在可以访问 media 中的文件了 用户可以上传文件了

@@ -1,0 +1,7 @@
+{% if imgs %}
+{% for img in imgs %}
+    <img src="{{ img.img.url }}" />
+{% endfor %}
+{% endif %}
+
+<a href="{% url 'index:uploading' %}"">上传图片</a>

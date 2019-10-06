@@ -7,14 +7,13 @@ from django.conf import settings
 from django.urls import reverse
 from django.db import models
 from datetime import datetime
-from .forms import LoginForm, NameForm
+# from .forms import LoginForm, NameForm
 from .models import Student, Lab, Instrument, Day, Reservation
 
 # 后期再加
-class_ = ['一班', '二班', '三班', '四班', '五班', '六班', '七班', '八班', '九班', '十班']
+# class_ = ['一班', '二班', '三班', '四班', '五班', '六班', '七班', '八班', '九班', '十班']
 
 # 自己定义一个装饰器好了
-
 
 def my_login_required(func):
     def check_login_status(request, **kargs):
@@ -35,21 +34,20 @@ def md5(pwd):
 
 def index(request):
     '''
-    return 'hello world'
+    首次进入 返回登录界面
     '''
     return redirect(reverse('tests:login'))
 
-# for test
 
 
-def get_name(request):
-    if request.method == 'POST':
-        form = NameForm(request.POST)
-        if form.is_valid():
-            return HttpResponse("good!")
-    else:
-        form = NameForm()
-    return render(request, 'tests/name.html', {'form': form})
+# def get_name(request):
+#     if request.method == 'POST':
+#         form = NameForm(request.POST)
+#         if form.is_valid():
+#             return HttpResponse("good!")
+#     else:
+#         form = NameForm()
+#     return render(request, 'tests/name.html', {'form': form})
 
 # for test
 
@@ -99,7 +97,7 @@ def login(request):
 def register(request):
     message = ''
     if request.method == 'POST':
-        st_id = request.POST.get("st_id") # 是否需要验证 id 存在
+        st_id = request.POST.get("st_id")  # 是否需要验证 id 存在
         st_name = request.POST.get("st_name")
         pwd_first = request.POST.get("pwd_first")
         pwd_again = request.POST.get("pwd_again")
@@ -121,6 +119,7 @@ def register(request):
         return render(request, 'tests/register.html', {'message': message})
 
     return render(request, 'tests/register.html', {'message': message})
+
 
 @my_login_required
 def logout(request):
@@ -275,6 +274,7 @@ def make_reserversion(request):
         # 是否已经预约了这个教室
         class_can_reservered = 1 if len(Reservation.objects.filter(
             lab=lab, week_ord_res=week_ord, what_day=weekday, class_id=class_id)) < 8 else 0
+        # 实验室是否可以被预约 每节课最多八个人
 
         if man_can_reserve and class_can_reservered and hasnt_reserved_the_class:
             Reservation.objects.create(
@@ -307,7 +307,7 @@ def make_reserversion(request):
             res_day.save()
 
             # 这里用名称更好 redirect(reverse('tests:profile'))
-####################################### 发送邮件
+            # 发送邮件
             subject = "预约验证码"
             from_email = settings.DEFAULT_FROM_EMAIL
             send_msg = {'week': week_ord, 'whatday': weekday, 'class_id': class_id, 'lab': lab.name,
@@ -317,11 +317,12 @@ def make_reserversion(request):
             to_addr = '{}@stu.hit.edu.cn'.format(student.student_num)
             try:
                 send_mail(subject, msg, from_email, [to_addr])
-                send_mail('发送失败', '预约邮件发送成功，注意查看', from_email, ['407046678@qq.com'])
+                send_mail('发送失败', '预约邮件发送成功，注意查看',
+                          from_email, ['407046678@qq.com'])
             except:
                 send_mail('发送失败', '预约邮件发送失败，注意查看。原邮件内容：'+msg,
-                         from_email, ['407046678@qq.com'])
-############################################
+                          from_email, ['407046678@qq.com'])
+            #############################
             return redirect(reverse('tests:profile'))
 
         elif man_can_reserve:
@@ -394,6 +395,7 @@ def contact(request):
         # 邮件头
         subject = request.POST.get('subject', '')
         from_email = request.POST.get('from_email', '')
+        # 需要检测这个邮箱是否格式正确
         msg = request.POST.get('feedback', '')
         # 详细发送人
         student = Student.objects.get(id=request.session['user_id'])
@@ -411,7 +413,6 @@ def contact(request):
         else:
             return HttpResponse('请输入正确的信息')
     return render(request, 'tests/contact.html')
-
 
 @my_login_required
 def send_email(request):
@@ -432,3 +433,4 @@ def send_email(request):
         return redirect(reverse('tests:thanks'))
     else:
         return HttpResponse('请输入正确的信息')
+

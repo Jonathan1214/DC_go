@@ -20,5 +20,7 @@ class Choice(models.Model):
 
 # 创建django的model时，有DateTimeField、DateField和TimeField三种类型可以用来创建日期字段，
 # 其值分别对应着datetime()、date()、time()三中对象。这三个field有着相同的参数auto_now和auto_now_add，
-# 表面上看起来很easy，但实际使用中很容易出错，下面是一些注意点。
+# 表面上看起来很easy，但实际使用中很容易出错，
+# 下面是一些注意点。
+# 没有下面了
 

@@ -50,3 +50,19 @@ class Membership(models.Model):
         related_name="membership_invites",
     )
     invite_reason = models.CharField(max_length=64)
+
+class MyUser(models.Model):
+    account = models.CharField(max_length=10)
+    pwd = models.CharField(max_length=100)
+
+class IMG(models.Model):
+    img = models.ImageField(upload_to='img')
+    name = models.CharField(max_length=20)
+    arthor = models.ForeignKey(MyUser, on_delete=models.CASCADE, null=True)
+    # 每张图片对应作者 也许还要加上上传时间
+    up_load_time = models.DateTimeField(null=True)
+
+
+# 创建django的model时，有DateTimeField、DateField和TimeField三种类型可以用来创建日期字段，
+# 其值分别对应着datetime()、date()、time()三中对象。这三个field有着相同的参数auto_now和auto_now_add，
+
