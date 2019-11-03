@@ -9,6 +9,7 @@ from django.db import models
 from datetime import datetime
 # from .forms import LoginForm, NameForm
 from .models import Student, Lab, Instrument, Day, Reservation
+import cv2
 
 # 后期再加
 # class_ = ['一班', '二班', '三班', '四班', '五班', '六班', '七班', '八班', '九班', '十班']
@@ -95,16 +96,29 @@ def login(request):
 
 
 def register(request):
+    '''
+    bugfix: 排除空格
+    '''
     message = ''
     if request.method == 'POST':
-        st_id = request.POST.get("st_id")  # 是否需要验证 id 存在
-        st_name = request.POST.get("st_name")
-        pwd_first = request.POST.get("pwd_first")
-        pwd_again = request.POST.get("pwd_again")
+        st_id = request.POST.get("st_id", 0)  # 是否需要验证 id 存在
+        st_name = request.POST.get("st_name", 0) # 验证是否填写
+        pwd_first = request.POST.get("pwd_first", 0)
+        pwd_again = request.POST.get("pwd_again", 0)
 
         # if Student.objects.get(student_num=st_id):
         #     message = '学号已存在'
         #     return render(request, 'tests/register.html', {'message': message})
+        if st_id and st_name and pwd_first and pwd_again:
+            message = "注册信息有误"
+            return render(request, 'tests/register.html', {'message': message})
+
+        if message:
+            pass
+
+        if Student.objects.get(student_num=st_id):
+            message = "学号已被注册"
+            return render(request, 'tests/register.html', {'message': message})
 
         if pwd_first == pwd_again:
             Student.objects.create(
@@ -179,7 +193,27 @@ def query_result(request):
         # 不指定 lab 和周次则查询所有的预约，按照 lab_id 周次 星期 节次 排序
         # 双下划线 means querying across model relation
 
-    return render(request, 'tests/query_result.html', {'lab': lab, 'week': qweek_id, 'res_list': res_list})
+    num_of_people = 0
+    is_success = 0
+    try:
+        file_name = './count_people.bmp'
+        img = cv2.imread(file_name, 1)
+        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        xml = './haarcascade_frontalface_alt2.xml'
+        face_cascade = cv2.CascadeClassifier(xml)
+        faces = face_cascade.detectMultiScale(gray)
+        num_of_people = len(faces)
+        is_success = 1
+    except:
+        pass
+    # test_status = 1 # 测试
+    # if test_status:
+    #     is_success = 1
+    #     num_of_people = 2
+    # test
+    is_success = 0
+    num_of_people = 0
+    return render(request, 'tests/query_result.html', {'lab': lab, 'week': qweek_id, 'num_of_people': num_of_people, 'is_success': is_success,'res_list': res_list})
 
 
 @my_login_required

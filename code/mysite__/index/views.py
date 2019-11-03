@@ -1,15 +1,16 @@
 import sys
 import hashlib
 sys.path.append("..")
-from tests.models import Student
+# from tests.models import Student
 from .models import IMG, MyUser
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, redirect
 from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
 
-def home(request):
-    students = Student.objects.all()
-    return render(request, 'index/home.html', {'students': students})
+# def home(request):
+#     students = Student.objects.all()
+#     return render(request, 'index/home.html', {'students': students})
 
 def md5(pwd):
     md5_pwd = hashlib.md5(bytes('MyLib', encoding='utf-8'))
@@ -71,11 +72,12 @@ def login(request):
     message = ''
     return render(request, 'index/login2.html', {'message': message})
 
+# @csrf_exempt
 def uploading(request):
     if request.method == 'POST':
         new_img = IMG(
             img=request.FILES.get('img'),
-            name = request.FILES.get('img').name
+            name=request.FILES.get('img').name
         )
         new_img.save()
         return redirect(reverse('index:show_img'))

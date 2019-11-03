@@ -57,7 +57,7 @@ class MyUser(models.Model):
 
 class IMG(models.Model):
     img = models.ImageField(upload_to='img')
-    name = models.CharField(max_length=20)
+    name = models.CharField(max_length=20, null=True)
     arthor = models.ForeignKey(MyUser, on_delete=models.CASCADE, null=True)
     # 每张图片对应作者 也许还要加上上传时间
     up_load_time = models.DateTimeField(null=True)
